@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaterScripts - Loading</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Background -->
+    <div class="bg-overlay"></div>
+    <div class="bg-image" id="bgImage" style="display:none;"></div>
+    <video class="bg-video" id="bgVideo" autoplay muted loop playsinline style="display:none;">
+        <source src="img/bg.mp4" type="video/mp4">
+    </video>
+    <div class="bg-youtube" id="bgYoutube" style="display:none;">
+        <iframe id="ytIframe" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    <div class="bg-particles" id="particles"></div>
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+        <!-- TOP BAR -->
+        <header class="top-bar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                        <circle cx="20" cy="20" r="12" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                        <text x="20" y="25" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="13" font-weight="700" font-family="Outfit">W</text>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">VATER<span class="accent">SCRIPTS</span></span>
+                    <span class="brand-sub">ROLEPLAY SUNUCUSU</span>
+                </div>
+            </div>
+
+            <nav class="top-nav">
+                <div class="nav-item active" data-tab="main">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                    Ana Sayfa
+                </div>
+                <div class="nav-item" data-tab="staff">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    Ekip
+                </div>
+                <div class="nav-item" data-tab="updates">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Güncellemeler
+                </div>
+                <div class="nav-item" data-tab="rules">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    Kurallar
+                </div>
+            </nav>
+
+            <!-- Sosyal Medya Butonları (Linkleri js/app.js dosyasındaki CONFIG.socialLinks kısmından değiştirebilirsin) -->
+            <div class="top-social">
+                <a href="#" class="social-btn discord" title="Discord">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.081.118 18.105.14 18.12a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+                </a>
+                <a href="#" class="social-btn youtube" title="YouTube">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                </a>
+                <a href="#" class="social-btn tiktok" title="TikTok">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                </a>
+            </div>
+        </header>
+
+        <!-- CONTENT AREA -->
+        <div class="content-area">
+
+            <!-- LEFT PANEL - Staff Team -->
+            <aside class="left-panel" id="leftPanel">
+                <div class="panel-header">
+                    <div class="panel-header-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    </div>
+                    <h3>Sunucu Ekibi</h3>
+                </div>
+
+                <div class="staff-list" id="staffList">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Server Stats -->
+                <div class="server-stats">
+                    <div class="stats-header">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                        Sunucu Durumu
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Durum</span>
+                        <span class="stat-value status-online">● ONLİNE</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Oyuncular</span>
+                        <span class="stat-value" id="playerCount">32 / 128</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Versiyon</span>
+                        <span class="stat-value">v2.0.0</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CENTER - Welcome -->
+            <main class="center-content" id="centerContent">
+                <div class="welcome-section">
+                    <div class="welcome-badge">
+                        <span class="badge-dot"></span>
+                        ROLEPLAYʼE HOŞ GELDİN
+                    </div>
+                    <h1 class="welcome-title">
+                        VATER<span class="title-accent">SCRIPTS</span>
+                    </h1>
+                    <p class="welcome-subtitle">Türkiye'nin En İyi FiveM Roleplay Deneyimi</p>
+                    <p class="welcome-desc">
+                        Profesyonel ekibimiz ve zengin içeriğimizle seni Los Santos'ta bekliyoruz. 
+                        Gerçekçi roleplay deneyimini yaşamak için hazır ol!
+                    </p>
+
+                    <!-- Hint Box -->
+                    <div class="hint-box">
+                        <div class="hint-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        </div>
+                        <div class="hint-content">
+                            <span class="hint-label">İPUCU</span>
+                            <p class="hint-text" id="hintText">Şehirde sosyalleşmek için Otel, Hastane, LS Customs ve diğer işletmeleri ziyaret edebilirsin.</p>
+                        </div>
+                    </div>
+
+                    <!-- Gallery strip kaldırıldı -->
+                </div>
+            </main>
+
+            <!-- RIGHT PANEL - Updates -->
+            <aside class="right-panel" id="rightPanel">
+                <div class="panel-header">
+                    <div class="panel-header-icon updates-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <h3>Son Güncellemeler</h3>
+                </div>
+
+                <div class="updates-list" id="updatesList">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Patch Notes -->
+                <div class="patch-notes">
+                    <div class="patch-header">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Patch Notes v2.0
+                    </div>
+                    <ul class="patch-list">
+                        <li>Yeni araç paketi eklendi</li>
+                        <li>Performans iyileştirmeleri yapıldı</li>
+                        <li>Hata düzeltmeleri uygulandı</li>
+                        <li>Yeni iş sistemi güncellendi</li>
+                        <li>Ekonomi dengesi ayarlandı</li>
+                        <li>Yeni MLO lokasyonları eklendi</li>
+                    </ul>
+                </div>
+            </aside>
+
+        </div>
+
+        <!-- BOTTOM BAR -->
+        <footer class="bottom-bar">
+            <!-- Loading Progress -->
+            <div class="loading-section">
+                <div class="loading-label">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 3L3 10.53v.98l6.84 2.65L12.48 21h.98L21 3z"/></svg>
+                    <span id="loadingText">Sunucuya Bağlanılıyor...</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progressBar">
+                            <div class="progress-glow"></div>
+                        </div>
+                    </div>
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+            </div>
+
+            <!-- Music Player -->
+            <div class="music-player">
+                <div class="music-info">
+                    <div class="music-icon-wrap">
+                        <svg class="music-note" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                    </div>
+                    <div class="music-track-info">
+                        <span class="music-title" id="musicTitle">Vater Scripts</span>
+                        <span class="music-artist">Sunucu Müziği</span>
+                    </div>
+                </div>
+                <div class="music-controls">
+                    <button class="music-btn" id="prevBtn" onclick="prevSong()">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                    </button>
+                    <button class="music-btn play-btn" id="playBtn" onclick="toggleMusic()">
+                        <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+                    <button class="music-btn" id="nextBtn" onclick="nextSong()">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                    </button>
+                </div>
+                <div class="volume-control">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" oninput="setVolume(this.value)">
+                </div>
+            </div>
+
+            <!-- Right Info -->
+            <div class="bottom-right">
+                <div class="connection-info">
+                    <div class="conn-dot"></div>
+                    <span>BAĞLANTI KURULDİ</span>
+                </div>
+                <div class="server-time" id="serverTime">--:--</div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Tab Panels -->
+    <div class="tab-overlay" id="tabOverlay" style="display:none;">
+        <div class="tab-panel" id="tabPanel">
+            <div class="tab-close" onclick="closeTab()">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </div>
+            <div class="tab-content" id="tabContent"></div>
+        </div>
+    </div>
+
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- Gizli YouTube Müzik Player -->
+    <div id="ytMusicContainer" style="position:fixed;bottom:-9999px;left:-9999px;width:1px;height:1px;pointer-events:none;opacity:0;">
+        <div id="ytMusicPlayer"></div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="img/music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
