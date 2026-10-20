@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WraithPVP Inventory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style_v2.css" />
+</head>
+<body>
+
+    <div id="inventory-wrapper" class="hidden">
+
+        <div class="inv-layout">
+
+            <!-- ── SOL PANEL: Oyuncu Envanteri (tek grid, tab yok) ── -->
+            <div class="inv-panel" id="panel-player">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-accent">WRAITH</span>PVP
+                        <span class="title-sub">— Envanter</span>
+                    </div>
+                    <div class="panel-weight">
+                        <svg class="weight-icon" viewBox="0 0 24 24" fill="none">
+                            <path d="M6 9l6-6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            <rect x="3" y="9" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                        </svg>
+                        <span id="current-weight">0.0</span>
+                        <span class="weight-sep">/</span>
+                        <span id="max-weight">1000</span>
+                        <span class="weight-unit">KG</span>
+                    </div>
+                    <button class="close-btn" id="close-btn" title="Kapat (ESC)">✕</button>
+                </div>
+
+                <div class="weight-bar-container">
+                    <div class="weight-bar-fill" id="weight-bar-fill"></div>
+                </div>
+
+                <!-- Tüm slotlar tek grid'de (envanter + hotbar birlikte) -->
+                <div class="slots-grid" id="player-slots"></div>
+
+                <!-- Hotbar ayırıcı çizgi -->
+                <div class="hotbar-divider">
+                    <span class="hotbar-divider-label">HOTBAR</span>
+                </div>
+
+                <!-- Hotbar slotları (ayrı satır, ama tab yok) -->
+                <div class="slots-grid hotbar-row" id="hotbar-slots"></div>
+            </div>
+
+            <!-- ── SAĞ PANEL: Yerdeki Eşyalar (sol panelle aynı stil) ── -->
+            <div class="inv-panel" id="panel-ground">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-accent">YER</span>DEKİ
+                        <span class="title-sub">— Eşyalar</span>
+                    </div>
+                    <div class="panel-weight" style="color:rgba(200,180,130,0.45);font-size:11px;gap:4px">
+                        <svg viewBox="0 0 24 24" fill="none" style="width:13px;height:13px">
+                            <path d="M12 4v12M7 11l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                        Yakınındaki eşyalar
+                    </div>
+                </div>
+
+                <div class="weight-bar-container" style="visibility:hidden">
+                    <div class="weight-bar-fill" style="width:0"></div>
+                </div>
+
+                <!-- Yerdeki eşyaların slotları (sol panelle aynı grid) -->
+                <div class="slots-grid ground-grid" id="ground-slots"></div>
+
+                <!-- Drop zone — sol panelinkiyle aynı hotbar-divider tarzı -->
+                <div class="hotbar-divider">
+                    <span class="hotbar-divider-label">BIRAKMAK İÇİN SÜRÜKLE</span>
+                </div>
+                <div class="drop-zone" id="drop-zone">
+                    <div class="drop-zone-inner">
+                        <svg viewBox="0 0 24 24" fill="none" width="24" height="24">
+                            <path d="M12 4v12M7 11l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4 19h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>Buraya sürükle → Yere bırak</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- /inventory-wrapper -->
+
+    <!-- ── Context Menu ── -->
+    <div id="context-menu" class="context-menu hidden">
+        <div class="ctx-item-info" id="ctx-item-info"></div>
+        <div class="ctx-divider"></div>
+        <div class="context-option" id="context-use">
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Kullan
+        </div>
+        <div class="context-option" id="context-drop">
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M12 4v12M7 11l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 19h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Yere Bırak
+        </div>
+        <div class="context-option" id="context-pickup" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M12 20V8M7 13l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 5h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Al
+        </div>
+        <div class="context-option ctx-danger" id="context-split">
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Böl
+        </div>
+    </div>
+
+    <!-- ── Amount Modal (Böl / Miktar Seç) ── -->
+    <div id="amount-modal" class="amount-modal hidden">
+        <div class="amount-modal-box">
+            <div class="amount-title" id="amount-title">Miktar seç</div>
+            <div class="amount-controls">
+                <button class="amount-btn" id="amount-minus">−</button>
+                <input type="number" id="amount-input" value="1" min="1" />
+                <button class="amount-btn" id="amount-plus">+</button>
+            </div>
+            <div class="amount-actions">
+                <button class="amount-confirm" id="amount-confirm">Onayla</button>
+                <button class="amount-cancel"  id="amount-cancel">İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Standalone HUD Hotbar (shows on TAB) -->
+    <div id="hud-hotbar-wrapper" class="hud-hotbar-hidden">
+        <div class="slots-grid hotbar-row" id="hud-hotbar-slots" style="padding:0;overflow:visible"></div>
+    </div>
+
+    <script src="script_v2.js"></script>
+</body>
+</html>
