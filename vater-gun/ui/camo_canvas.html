@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>vater-silahci Camo DUI Canvas & GIF Engine</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 512px; height: 512px; overflow: hidden; background: #000; }
+        #camo-img { width: 512px; height: 512px; object-fit: cover; display: none; }
+        #camo-canvas { width: 512px; height: 512px; display: block; }
+    </style>
+</head>
+<body>
+    <img id="camo-img" src="" alt="Animated GIF Camo" />
+    <canvas id="camo-canvas" width="512" height="512"></canvas>
+    <script>
+        const canvas = document.getElementById('camo-canvas');
+        const ctx = canvas.getContext('2d');
+        const camoImg = document.getElementById('camo-img');
+        const W = 512;
+        const H = 512;
+
+        function notifyDuiReady(attempt = 0) {
+            const resourceName = typeof GetParentResourceName === 'function'
+                ? GetParentResourceName()
+                : window.location.hostname.replace(/^cfx-nui-/, '');
+
+            fetch(`https://${resourceName}/camoDuiReady`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+                body: '{}'
+            }).catch(() => {
+                if (attempt < 20) {
+                    setTimeout(() => notifyDuiReady(attempt + 1), 100);
+                }
+            });
+        }
+
+        function resolveCamoPath(url) {
+            if (!url) return '';
+            let cleaned = url.trim();
+
+            if (cleaned.startsWith('http://') || cleaned.startsWith('https://')) {
+                const imgurAlbumMatch = cleaned.match(/imgur\.com\/a\/([a-zA-Z0-9]+)/i);
+                if (imgurAlbumMatch && imgurAlbumMatch[1]) {
+                    return 'https://i.imgur.com/' + imgurAlbumMatch[1] + '.gif';
+                }
+
+                const imgurGalleryMatch = cleaned.match(/imgur\.com\/gallery\/([a-zA-Z0-9]+)/i);
+                if (imgurGalleryMatch && imgurGalleryMatch[1]) {
+                    return 'https://i.imgur.com/' + imgurGalleryMatch[1] + '.gif';
+                }
+
+                const imgurPostMatch = cleaned.match(/imgur\.com\/([a-zA-Z0-9]{5,8})$/i);
+                if (imgurPostMatch && imgurPostMatch[1]) {
+                    return 'https://i.imgur.com/' + imgurPostMatch[1] + '.gif';
+                }
+                return cleaned;
+            }
+
+            if (!cleaned.startsWith('assets/')) {
+                cleaned = 'assets/camos/' + cleaned;
+            }
+            return cleaned;
+        }
+
+        camoImg.onerror = function() {
+            if (camoImg.src.endsWith('.gif')) {
+                camoImg.src = camoImg.src.replace('.gif', '.png');
+            } else if (camoImg.src.endsWith('.png')) {
+                camoImg.src = camoImg.src.replace('.png', '.jpg');
+            } else {
+                camoImg.style.display = 'none';
+                canvas.style.display = 'block';
+                renderPattern('default', '#f97316', '#7c2d12');
+            }
+        };
+
+        function renderPattern(patternId, pColor, sColor) {
+            ctx.clearRect(0, 0, W, H);
+        }
+
+        // FiveM SendDuiMessage Listener
+        window.addEventListener('message', function(event) {
+            const data = event.data;
+            if (data && data.action === "renderPattern") {
+                const targetUrl = resolveCamoPath(data.imgUrl);
+                if (targetUrl && targetUrl !== '') {
+                    canvas.style.display = 'none';
+                    camoImg.style.display = 'block';
+                    camoImg.src = targetUrl;
+                } else {
+                    camoImg.style.display = 'none';
+                    canvas.style.display = 'block';
+                    renderPattern(data.patternId, data.primaryColor, data.secondaryColor);
+                }
+            }
+        });
+
+        notifyDuiReady();
+    </script>
+</body>
+</html>

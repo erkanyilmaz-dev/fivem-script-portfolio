@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vater-silahci - Call of Duty MW Gunsmith & Custom Camo Studio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app" class="hidden">
+        <!-- HUD Overlays -->
+        <div class="hud-vignette"></div>
+        <div class="hud-scanline"></div>
+        <div class="hud-grid-overlay"></div>
+
+        <!-- SVG Target Line Overlay -->
+        <svg id="gunsmith-lines-svg" class="lines-overlay"></svg>
+
+        <!-- Top COD Tactical Header Bar -->
+        <header class="mw-header cod-box-chamfer">
+            <div class="header-corner-tl"></div>
+            <div class="header-corner-br"></div>
+            
+            <div class="mw-brand">
+                <div class="mw-subtag">
+                    <span class="tac-code">[SYS.VER 2.4]</span>
+                    <i class="fa-solid fa-crosshair"></i> GUNSMITH // WEAPON CUSTOMIZATION BAY
+                </div>
+                <h1 id="weapon-title">SPECIAL CARBINE <span class="mw-class-badge">ASSAULT RIFLE</span></h1>
+            </div>
+
+            <!-- Header Nav Tabs -->
+            <nav class="mw-nav">
+                <button class="mw-tab active cod-btn-chamfer" data-tab="nodes">
+                    <i class="fa-solid fa-gun"></i> ATTACHMENTS
+                </button>
+                <button class="mw-tab cod-btn-chamfer" data-tab="tints">
+                    <i class="fa-solid fa-brush"></i> CAMOS & SKINS
+                </button>
+            </nav>
+
+            <div class="price-box cod-box-corner">
+                <span class="price-lbl">// ESTIMATED COST</span>
+                <span id="total-price" class="price-val">$0</span>
+            </div>
+        </header>
+
+        <!-- Locked Item Preview Banner -->
+        <div id="locked-preview-banner" class="locked-preview-banner cod-box-chamfer hidden">
+            <div class="lock-pulse-dot"></div>
+            <i class="fa-solid fa-lock"></i> <span>KİLİTLİ ÖĞE ÖNİZLENİYOR &mdash; BU KAPLAMA MAĞAZADAN SATIN ALINMALIDIR</span>
+        </div>
+
+        <!-- Modern NUI Toast Container -->
+        <div id="nui-toast-container" class="nui-toast-container"></div>
+
+        <!-- Camera Control Hint -->
+        <div class="camera-hint cod-box-chamfer">
+            <div class="hint-pulse-dot"></div>
+            <i class="fa-solid fa-arrows-spin"></i> DRAG MOUSE TO ROTATE 360&deg; | SCROLL TO ZOOM
+        </div>
+
+        <!-- Floating Target Nodes Layer -->
+        <main class="mw-viewport">
+            <div id="nodes-container" class="mw-nodes-layer"></div>
+        </main>
+
+        <!-- Slide-Over Drawer Panel -->
+        <aside id="drawer-panel" class="mw-drawer cod-box-chamfer hidden">
+            <div class="drawer-header">
+                <div class="drawer-title-wrapper">
+                    <span class="drawer-subtag">// TACTICAL MODIFICATIONS</span>
+                    <h3 id="drawer-title"><i class="fa-solid fa-sliders"></i> COMPONENT SELECTOR</h3>
+                </div>
+                <button class="btn-icon cod-btn-chamfer" id="btn-close-drawer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="drawer-body-content" class="drawer-body">
+                <!-- Dynamic Items Inserted via JS -->
+            </div>
+        </aside>
+
+        <!-- COD Gunsmith Footer Stats Bar -->
+        <footer class="mw-footer">
+            <div class="stats-panel cod-box-chamfer">
+                <div class="stats-header">
+                    <span class="stats-title"><i class="fa-solid fa-chart-column"></i> WEAPON ATTRIBUTES</span>
+                    <span class="stats-telemetry">DIAGNOSTIC_FEED // LIVE</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-col">
+                        <div class="stat-meta">
+                            <span class="stat-name">DAMAGE</span>
+                            <span id="stat-val-damage" class="stat-val">60</span>
+                        </div>
+                        <div class="bar-container">
+                            <div id="stat-bar-damage" class="bar-fill base" style="width: 60%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-col">
+                        <div class="stat-meta">
+                            <span class="stat-name">RANGE</span>
+                            <span id="stat-val-range" class="stat-val">68</span>
+                        </div>
+                        <div class="bar-container">
+                            <div id="stat-bar-range" class="bar-fill base" style="width: 68%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-col">
+                        <div class="stat-meta">
+                            <span class="stat-name">ACCURACY</span>
+                            <span id="stat-val-accuracy" class="stat-val">72</span>
+                        </div>
+                        <div class="bar-container">
+                            <div id="stat-bar-accuracy" class="bar-fill base" style="width: 72%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-col">
+                        <div class="stat-meta">
+                            <span class="stat-name">RECOIL CONTROL</span>
+                            <span id="stat-val-control" class="stat-val">75</span>
+                        </div>
+                        <div class="bar-container">
+                            <div id="stat-bar-control" class="bar-fill base" style="width: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-col">
+                        <div class="stat-meta">
+                            <span class="stat-name">MOBILITY</span>
+                            <span id="stat-val-mobility" class="stat-val">70</span>
+                        </div>
+                        <div class="bar-container">
+                            <div id="stat-bar-mobility" class="bar-fill base" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mw-footer-actions">
+                <button class="mw-btn btn-cancel cod-btn-chamfer" id="btn-cancel">
+                    <i class="fa-solid fa-xmark"></i> DISCARD MODS
+                </button>
+                <button class="mw-btn btn-confirm cod-btn-chamfer" id="btn-save">
+                    <i class="fa-solid fa-check"></i> EQUIP MODIFICATIONS
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+</body>
+</html>
+

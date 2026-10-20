@@ -1,0 +1,881 @@
+/* ============================================================================
+   CALL OF DUTY: MODERN WARFARE / WARZONE GUNSMITH TACTICAL DESIGN SYSTEM
+   Theme: Amber Gold & Dark Metallic Tactical (CoD Warzone Style)
+   ============================================================================ */
+
+:root {
+    --bg-dark: rgba(7, 10, 15, 0.95);
+    --bg-header: rgba(10, 14, 22, 0.96);
+    --bg-card: rgba(13, 19, 28, 0.94);
+    --bg-card-hover: rgba(24, 35, 52, 0.98);
+    --bg-drawer: rgba(9, 13, 19, 0.97);
+    
+    --border-slate: rgba(148, 163, 184, 0.2);
+    --border-accent: rgba(255, 157, 0, 0.5);
+    --border-cyan: rgba(56, 189, 248, 0.4);
+    
+    /* Call of Duty MW Warzone Amber-Gold Accent */
+    --accent-primary: #ff9d00;
+    --accent-dark: #d97706;
+    --accent-glow: rgba(255, 157, 0, 0.45);
+    --accent-glow-subtle: rgba(255, 157, 0, 0.15);
+
+    --cyan-primary: #38bdf8;
+    --cyan-glow: rgba(56, 189, 248, 0.35);
+
+    --text-bright: #ffffff;
+    --text-muted: #cbd5e1;
+    --text-dim: #64748b;
+
+    --green-stat: #10b981;
+    --red-stat: #ef4444;
+
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+    user-select: none;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* App Main Container */
+#app {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: transparent !important;
+}
+
+/* Call of Duty HUD Vignette & Grid Effects */
+.hud-vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: radial-gradient(circle at center, transparent 40%, rgba(4, 6, 10, 0.88) 100%);
+    pointer-events: none;
+}
+
+.hud-scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.15) 51%);
+    background-size: 100% 4px;
+    pointer-events: none;
+}
+
+.hud-grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background-image: 
+        linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+/* SVG Line Overlay */
+.lines-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* Slanted Chamfer Polygons (Call of Duty MW Aesthetic) */
+.cod-box-chamfer {
+    clip-path: polygon(
+        12px 0, 
+        calc(100% - 12px) 0, 
+        100% 12px, 
+        100% calc(100% - 12px), 
+        calc(100% - 12px) 100%, 
+        12px 100%, 
+        0 calc(100% - 12px), 
+        0 12px
+    );
+}
+
+.cod-btn-chamfer {
+    clip-path: polygon(
+        8px 0, 
+        100% 0, 
+        100% calc(100% - 8px), 
+        calc(100% - 8px) 100%, 
+        0 100%, 
+        0 8px
+    );
+}
+
+/* Call of Duty MW Header Bar */
+.mw-header {
+    position: absolute;
+    top: 24px;
+    left: 30px;
+    right: 30px;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-header);
+    border: 1px solid var(--border-slate);
+    padding: 14px 28px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+}
+
+.mw-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent-primary);
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.mw-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mw-subtag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent-primary);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tac-code {
+    background: var(--accent-glow-subtle);
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+    padding: 1px 6px;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.mw-brand h1 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    color: var(--text-bright);
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-transform: uppercase;
+}
+
+.mw-class-badge {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-slate);
+    color: var(--text-muted);
+    padding: 3px 10px;
+    letter-spacing: 1.5px;
+}
+
+/* Nav Tabs */
+.mw-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.mw-tab {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-slate);
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 12px 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.mw-tab:hover {
+    background: var(--accent-glow-subtle);
+    border-color: var(--accent-primary);
+    color: var(--text-bright);
+}
+
+.mw-tab.active {
+    background: var(--accent-primary);
+    color: #05080c;
+    border-color: var(--accent-primary);
+    font-weight: 900;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.price-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 6px 16px;
+    border: 1px solid var(--border-slate);
+}
+
+.price-lbl {
+    font-size: 9px;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+}
+
+.price-val {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--accent-primary);
+    text-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* Camera Control Hint */
+.camera-hint {
+    position: absolute;
+    top: 98px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    background: rgba(8, 12, 18, 0.9);
+    border: 1px solid var(--border-slate);
+    padding: 7px 22px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--cyan-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.hint-pulse-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--cyan-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--cyan-primary);
+    animation: pulseDot 1.5s infinite;
+}
+
+@keyframes pulseDot {
+    0% { transform: scale(0.9); opacity: 0.7; }
+    50% { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+/* Viewport Layer */
+.mw-viewport {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.mw-nodes-layer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Call of Duty Floating Attachment Node Card (Fixed Flex & Layout) */
+.cod-node-card {
+    position: absolute;
+    pointer-events: auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border-slate);
+    padding: 10px 14px;
+    min-width: 230px;
+    max-width: 270px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    clip-path: polygon(
+        10px 0, 
+        100% 0, 
+        100% calc(100% - 10px), 
+        calc(100% - 10px) 100%, 
+        0 100%, 
+        0 10px
+    );
+}
+
+.cod-node-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--text-dim);
+    transition: all 0.2s ease;
+}
+
+.cod-node-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent-primary);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.8), 0 0 18px var(--accent-glow);
+}
+
+.cod-node-card:hover::before {
+    background: var(--accent-primary);
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.cod-node-card.active-equipped {
+    border-color: var(--accent-primary);
+    background: var(--accent-glow-subtle);
+}
+
+.cod-node-card.active-equipped::before {
+    background: var(--accent-primary);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.node-icon-box {
+    width: 34px;
+    height: 34px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-slate);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.cod-node-card:hover .node-icon-box,
+.cod-node-card.active-equipped .node-icon-box {
+    background: var(--accent-glow-subtle);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.node-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.node-slot-title {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.node-slot-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.node-status-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-slate);
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+.node-status-badge.equipped {
+    background: var(--accent-glow-subtle);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+/* Call of Duty Reticle Anchor Point */
+.reticle-pin {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--accent-primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    box-shadow: 0 0 12px var(--accent-glow);
+    animation: reticlePulse 2s infinite ease-in-out;
+}
+
+.reticle-pin::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes reticlePulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    50% { transform: translate(-50%, -50%) scale(1.25); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+}
+
+/* Slide-Over Drawer Panel */
+.mw-drawer {
+    position: absolute;
+    top: 98px;
+    right: 30px;
+    width: 380px;
+    max-height: calc(100vh - 250px);
+    z-index: 20;
+    background: var(--bg-drawer);
+    border: 1px solid var(--border-slate);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 15px 40px rgba(0,0,0,0.8);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-header {
+    padding: 16px 20px;
+    background: rgba(16, 22, 32, 0.95);
+    border-bottom: 1px solid var(--border-slate);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drawer-title-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer-subtag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--cyan-primary);
+    letter-spacing: 1.5px;
+}
+
+.drawer-header h3 {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-slate);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #000;
+}
+
+.drawer-body {
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 520px;
+}
+
+/* Drawer Custom Scrollbar */
+.drawer-body::-webkit-scrollbar {
+    width: 5px;
+}
+.drawer-body::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.3);
+}
+.drawer-body::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+}
+
+/* Call of Duty Drawer Option Items */
+.mw-item-card {
+    background: rgba(16, 22, 32, 0.8);
+    border: 1px solid var(--border-slate);
+    padding: 12px 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+    clip-path: polygon(
+        6px 0, 
+        100% 0, 
+        100% calc(100% - 6px), 
+        calc(100% - 6px) 100%, 
+        0 100%, 
+        0 6px
+    );
+}
+
+.mw-item-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent-primary);
+    transform: translateX(-3px);
+}
+
+.mw-item-card.active {
+    background: var(--accent-glow-subtle);
+    border-color: var(--accent-primary);
+    box-shadow: inset 0 0 15px var(--accent-glow-subtle);
+}
+
+.mw-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.mw-item-title {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-bright);
+}
+
+.mw-item-desc {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.mw-item-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-slate);
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.mw-item-card.active .mw-item-badge {
+    background: var(--accent-primary);
+    color: #000;
+    border-color: var(--accent-primary);
+    font-weight: 900;
+}
+
+/* COD Gunsmith Footer Bar */
+.mw-footer {
+    position: absolute;
+    bottom: 24px;
+    left: 30px;
+    right: 30px;
+    z-index: 10;
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.stats-panel {
+    flex: 1;
+    background: var(--bg-header);
+    border: 1px solid var(--border-slate);
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+}
+
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-slate);
+    padding-bottom: 8px;
+}
+
+.stats-title {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stats-telemetry {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent-primary);
+    letter-spacing: 1px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
+.stat-col {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.stat-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-name {
+    font-family: var(--font-heading);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.stat-val {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-bright);
+}
+
+.bar-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-slate);
+    position: relative;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent-primary));
+    box-shadow: 0 0 8px var(--accent-glow);
+    transition: width 0.3s ease;
+}
+
+/* Call of Duty Action Buttons */
+.mw-footer-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.mw-btn {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    padding: 16px 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-cancel {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: var(--border-slate);
+    color: var(--text-muted);
+}
+
+.btn-cancel:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: var(--red-stat);
+    color: var(--text-bright);
+}
+
+.btn-confirm {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #05080c;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.btn-confirm:hover {
+    background: #ffae19;
+    transform: translateY(-2px);
+    box-shadow: 0 0 28px var(--accent-glow);
+}
+
+/* Locked Item Preview Banner Overlay */
+.locked-preview-banner {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(220, 38, 38, 0.25);
+    border: 1px solid rgba(239, 68, 68, 0.7);
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
+    padding: 10px 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fca5a5;
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    z-index: 100;
+    animation: lockedBannerPulse 2s infinite alternate;
+}
+
+@keyframes lockedBannerPulse {
+    0% { border-color: rgba(239, 68, 68, 0.5); box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
+    100% { border-color: rgba(248, 113, 113, 1); box-shadow: 0 0 30px rgba(239, 68, 68, 0.6); }
+}
+
+.lock-pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ef4444;
+}
+
+/* Locked Skin Card Custom Styling */
+.mw-item-card.locked-skin {
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.mw-item-card.locked-skin:hover {
+    border-color: rgba(239, 68, 68, 0.8);
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.mw-item-badge.locked-badge {
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.15);
+}
+
+/* Sleek Modern Toast Notifications */
+.nui-toast-container {
+    position: absolute;
+    bottom: 120px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 999;
+    pointer-events: none;
+}
+
+.nui-toast {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.8);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    padding: 12px 20px;
+    color: #f87171;
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    animation: toastSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes toastSlideIn {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.nui-toast.fade-out {
+    animation: toastFadeOut 0.3s forwards;
+}
+
+@keyframes toastFadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(50px); }
+}
