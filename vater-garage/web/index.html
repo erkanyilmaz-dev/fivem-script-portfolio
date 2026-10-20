@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vater Garage</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app" class="app hidden">
+    <section class="garage-shell">
+      <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">V</div><div><span>VATER SCRIPTS</span><strong>VATER GARAGE</strong></div></div>
+        <div class="garage-info"><p class="eyebrow">AKTİF LOKASYON</p><h2 id="garage-name">Legion Square</h2><div class="garage-type" id="garage-type">HALKA AÇIK</div></div>
+        <div class="sidebar-stats"><div><span id="stored-count">0</span><small>GARAJDA</small></div><div><span id="outside-count">0</span><small>DIŞARIDA</small></div></div>
+        <p class="sidebar-tip">Araç durumları gerçek zamanlı kayıtlarınızdan alınır. Araç bilgileri teslim edildiğinde korunur.</p>
+        <button class="close-side" id="close-button"><span>ESC</span> Kapat</button>
+      </aside>
+
+      <section class="content">
+        <header class="content-header"><div><p class="eyebrow">ARAÇ YÖNETİMİ</p><h1>Filonu yönet</h1></div><button id="transfer-open" class="outline-button">Araç Devret</button></header>
+        <div class="toolbar"><label class="search"><span>⌕</span><input id="search" type="search" placeholder="Plaka veya araç ara..."></label><div class="filters"><button class="filter active" data-filter="all">Tümü</button><button class="filter" data-filter="stored">Garajda</button><button class="filter" data-filter="outside">Dışarıda</button><button class="filter" data-filter="impound">Çekicide</button></div></div>
+        <div id="vehicle-list" class="vehicle-list"></div>
+        <div id="empty-state" class="empty-state hidden"><div class="empty-icon">▱</div><h3>Araç bulunamadı</h3><p>Filtreyi değiştir veya daha farklı bir arama yap.</p></div>
+      </section>
+    </section>
+
+    <div class="modal-backdrop hidden" id="transfer-modal"><form class="transfer-modal" id="transfer-form"><button type="button" class="modal-close" id="transfer-close">×</button><p class="eyebrow">GÜVENLİ ARAÇ DEVRİ</p><h2>Araç sahibini değiştir</h2><p id="transfer-vehicle">Önce devredilecek aracı seç.</p><label>Oyuncu ID<input id="target-id" type="number" min="1" step="1" inputmode="numeric" required placeholder="Örn. 12"></label><p class="fee-note">Oyuncu çevrimiçi olmalıdır. Devir bedeli banka hesabından tahsil edilir.</p><button class="primary-button" type="submit">Devri Onayla <span>→</span></button></form></div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
