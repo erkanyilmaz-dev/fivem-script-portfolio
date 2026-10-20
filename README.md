@@ -1,33 +1,38 @@
-# fivem-script-portfolio
-# 🚔 vater-crime | 3D Crime Scene Reconstruction & Investigation System
+# ⚡ Vater Scripts | FiveM Resource Portfolio
 
-> **vater-crime** is an advanced crime scene investigation and evidence analysis system developed exclusively for law enforcement agencies. After collecting evidence at the crime scene, officers can visualize and replay all events that occurred in the last 5 minutes as a fully interactive **3D simulation**.
+Welcome to the official GitHub portfolio of **Vater Scripts**. 
 
----
-
-## 🚀 Key Features
-
-* **3D Crime Scene Reconstruction:** Replay all actions, combat, and movement within a **5-minute window** in a full 3D interactive simulation.
-* **Advanced Evidence Collection:** Detect and collect physical evidence including bullet casings, blood splatters, fingerprints, and tire tracks.
-* **Restricted Law Enforcement Access:** Secure job-level authorization ensuring only designated police personnel can access the system.
-* **High Performance Optimization:** Minimum CPU and GPU usage (`0.00ms` - `0.01ms` on idle/playback) during 3D rendering and simulation.
-* **Immersive Visual Effects:** Custom camera angles and visual filters tailored for crime scene inspection mode.
-* **Fully Configurable:** Easily customize job permissions, playback time limits, and evidence types directly via `config.lua`.
+I specialize in designing and developing highly optimized, innovative, and user-friendly FiveM scripts for **QBCore**, **ESX**, and standalone frameworks. From modern UI designs to complex game mechanics and 3D simulation systems, all resources are crafted with performance and security in mind.
 
 ---
 
-## 📦 Dependencies
+## 🌟 Featured Projects
 
-Ensure the following resources are installed on your server prior to running this script:
-
-* **Framework:** `qb-core` or `es_extended` (ESX)
-* **Target System:** `qb-target` or `ox_target` *(optional)*
-* **UI / Utility:** `ox_lib` or equivalent notification system
+| Script Name | Category | Framework | Key Highlights |
+| :--- | :---: | :---: | :--- |
+| **`vater-crime`** | Police / Utility | QBCore / ESX | 3D Crime Scene Reconstruction, 5-minute replay system, evidence gathering. |
+| **`vater-admin`** | Management | QBCore / ESX | Advanced admin panel, real-time telemetry, permission management, modern UI. |
+| **`vater-inventory`** | Core / UI | QBCore / ESX | Highly optimized drag-and-drop inventory, seamless metadata support, low idle consumption. |
 
 ---
 
-## ⚙️ Installation
+## 🛠️ Technical Stack & Tools
 
-1. Download or clone the repository into your server's resources directory:
-   ```bash
-   git clone [https://github.com/YOUR_USERNAME/vater-crime.git](https://github.com/YOUR_USERNAME/vater-crime.git)
+* **Languages:** Lua, JavaScript (ES6+), HTML5, CSS3/SASS, SQL
+* **Frameworks & Libraries:** React, Vue.js, `ox_lib`, `qb-core`, `es_extended`
+* **Tools & Platforms:** Git, VS Code, Luau, Figma, MySQL/MariaDB
+
+---
+
+## 🚀 Key Advantages
+
+- **⚡ Low Latency & High Optimization:** All scripts run at `0.00ms` – `0.01ms` on idle to maintain peak server performance.
+- **🛡️ Server-Side Security:** Built-in safeguards to protect against unauthorized event triggers and exploit attempts.
+- **🎨 Modern UI/UX Design:** Responsive, crisp, and clean interfaces designed for modern roleplay servers.
+- **🌐 Localization:** Easy-to-translate `config.lua` files supporting multi-language setups (`en`, `tr`, etc.).
+
+---
+
+## 🤝 Contact & Custom Development
+
+Looking
