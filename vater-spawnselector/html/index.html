@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaterPVP Spawn Selector</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        html {
+            background: transparent !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: transparent;
+            overflow: hidden;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 80px;
+            color: #fff;
+        }
+
+        /* ── Sol Konum Listesi ── */
+        .locations-container {
+            width: 440px;
+            height: auto;
+            max-height: 80vh;
+            background: rgba(18, 14, 10, 0.94);
+            border: 1px solid rgba(255, 179, 0, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(255, 179, 0, 0.02);
+            animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            border-bottom: 2px dashed rgba(255, 179, 0, 0.15);
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 26px;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #ffc107, #ff9800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(255, 152, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .locations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Scrollbar */
+        .locations-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .locations-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+        .locations-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 179, 0, 0.2);
+            border-radius: 10px;
+        }
+        .locations-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 179, 0, 0.4);
+        }
+
+        .location-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .location-item:hover {
+            background: linear-gradient(90deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.02));
+            border-color: rgba(255, 179, 0, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 179, 0, 0.15);
+        }
+
+        .location-item.active {
+            background: linear-gradient(90deg, #ffc107, #ff9800);
+            border-color: transparent;
+            box-shadow: 0 10px 25px rgba(255, 152, 0, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .loc-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .loc-label {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        .location-item:hover .loc-label {
+            color: #ffb300;
+        }
+
+        .location-item.active .loc-label {
+            color: #120e0a !important;
+        }
+
+        .loc-desc {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.45);
+            transition: color 0.3s ease;
+        }
+
+        .location-item.active .loc-desc {
+            color: rgba(18, 14, 10, 0.75) !important;
+        }
+
+        /* ── Sağ Detay & Spawn Kartı ── */
+        .details-container {
+            width: 460px;
+            background: rgba(18, 14, 10, 0.94);
+            border: 1px solid rgba(255, 179, 0, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(255, 179, 0, 0.02);
+            animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            justify-content: space-between;
+        }
+
+        .loc-details-view {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .detail-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffb300;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+        }
+
+        .detail-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .detail-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-card-label {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .stat-card-val {
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        /* Spawn Button */
+        .spawn-button {
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(90deg, #ffc107, #ff9800);
+            border: none;
+            border-radius: 15px;
+            color: #120e0a;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 152, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spawn-button::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -50%;
+            width: 200%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: skewX(-20deg);
+            transition: none;
+        }
+
+        .spawn-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 152, 0, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .spawn-button:hover::after {
+            left: 120%;
+            transition: all 0.8s ease-in-out;
+        }
+
+        .spawn-button:active {
+            transform: translateY(1px);
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-80px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(80px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sol Konum Listesi -->
+    <div class="locations-container">
+        <div class="header">
+            <h1 id="ui-title">SPAWN NOKTASI SEÇİN</h1>
+            <p id="ui-subtitle">VATERPVP - BABALARIN MEKANI</p>
+        </div>
+        <div class="locations-list" id="spawn-list">
+            <!-- Dinamik Konumlar Buraya Eklenecek -->
+        </div>
+    </div>
+
+    <!-- Sağ Detay ve Seçim Paneli -->
+    <div class="details-container">
+        <div class="loc-details-view" id="details-view">
+            <h2 class="detail-title" id="loc-title">Seçim Yapın</h2>
+            <p class="detail-desc" id="loc-desc">Lütfen doğmak istediğiniz noktayı listeden seçin.</p>
+            <div class="detail-stats" id="loc-stats-container" style="display: none;">
+                <div class="stat-card">
+                    <span class="stat-card-label" id="difficulty-lbl">ZORLUK</span>
+                    <span class="stat-card-val" id="loc-difficulty">Orta</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-card-label" id="density-lbl">PVP YOĞUNLUK</span>
+                    <span class="stat-card-val" id="loc-density">Çok Yoğun</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="spawn-button" id="btn-spawn">SPAWN OL</button>
+    </div>
+
+    <script>
+        let selectedSpawn = null;
+        let selectedSpawnType = null;
+        let translations = {};
+
+        // Audio helper to synthesize retro beep sounds using Web Audio API
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playBeep(freq, type, duration) {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type || 'sine';
+                osc.frequency.value = freq || 440;
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function playHoverSound() {
+            playBeep(600, 'triangle', 0.08);
+        }
+
+        function playClickSound() {
+            playBeep(800, 'sine', 0.15);
+        }
+
+        function post(event, data) {
+            fetch(`https://${GetParentResourceName()}/${event}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data || {})
+            });
+        }
+
+        function selectLocation(name, type, label, desc, difficulty, players) {
+            selectedSpawn = name;
+            selectedSpawnType = type;
+
+            document.querySelectorAll('.location-item').forEach(el => el.classList.remove('active'));
+            const activeEl = document.querySelector(`[data-name="${name}"]`);
+            if (activeEl) activeEl.classList.add('active');
+
+            document.getElementById('loc-title').textContent = label;
+            document.getElementById('loc-desc').textContent = desc;
+
+            const statsContainer = document.getElementById('loc-stats-container');
+            if (type === 'normal') {
+                statsContainer.style.display = 'flex';
+                document.getElementById('loc-difficulty').textContent = difficulty || 'Orta';
+                document.getElementById('loc-density').textContent = players || 'Normal';
+            } else {
+                statsContainer.style.display = 'none';
+            }
+
+            // Post setCam target to client
+            post("setCam", { posname: name, type: type });
+        }
+
+        window.addEventListener('message', function(event) {
+            const data = event.data;
+            const action = data.action;
+
+            if (action === 'showUi') {
+                if (data.status) {
+                    translations = data.translations || {};
+                    document.getElementById('ui-title').textContent = translations.title || 'SPAWN NOKTASI SEÇİN';
+                    document.getElementById('ui-subtitle').textContent = translations.subtitle || 'VATERPVP';
+                    document.getElementById('btn-spawn').textContent = translations.spawn_btn || 'SPAWN OL';
+                    document.getElementById('difficulty-lbl').textContent = translations.difficulty_label || 'ZORLUK';
+                    document.getElementById('density-lbl').textContent = translations.density_label || 'YOĞUNLUK';
+                    document.getElementById('loc-title').textContent = translations.select_spawn || 'Seçim Yapın';
+
+                    document.body.style.display = 'flex';
+                } else {
+                    document.body.style.display = 'none';
+                }
+            } else if (action === 'setupLocations') {
+                const listEl = document.getElementById('spawn-list');
+                listEl.innerHTML = '';
+
+                // 1. Son Konum Ekle
+                const lastLoc = document.createElement('div');
+                lastLoc.className = 'location-item';
+                lastLoc.setAttribute('data-name', 'current');
+                lastLoc.innerHTML = `
+                    <div class="loc-info">
+                        <span class="loc-label">${translations.last_location || 'Son Konum'}</span>
+                        <span class="loc-desc">${translations.last_loc_desc || 'En son çıktığınız yer.'}</span>
+                    </div>
+                `;
+                lastLoc.addEventListener('mouseenter', playHoverSound);
+                lastLoc.addEventListener('click', function() {
+                    playClickSound();
+                    selectLocation('current', 'current', translations.last_location || 'Son Konum', translations.last_loc_desc || 'En son çıktığınız yer.');
+                });
+                listEl.appendChild(lastLoc);
+
+                // 2. Diğer Yapılandırılmış Konumları Ekle
+                const locs = data.locations || {};
+                for (const key in locs) {
+                    const item = locs[key];
+                    const locItem = document.createElement('div');
+                    locItem.className = 'location-item';
+                    locItem.setAttribute('data-name', key);
+                    locItem.innerHTML = `
+                        <div class="loc-info">
+                            <span class="loc-label">${item.label}</span>
+                            <span class="loc-desc">${item.description || ''}</span>
+                        </div>
+                    `;
+                    locItem.addEventListener('mouseenter', playHoverSound);
+                    locItem.addEventListener('click', function() {
+                        playClickSound();
+                        selectLocation(key, 'normal', item.label, item.description, item.difficulty, item.players);
+                    });
+                    listEl.appendChild(locItem);
+                }
+
+                // İlk elemanı otomatik seç
+                setTimeout(() => {
+                    selectLocation('current', 'current', translations.last_location || 'Son Konum', translations.last_loc_desc || 'En son çıktığınız yer.');
+                }, 200);
+            }
+        });
+
+        // Spawn butonu tıklaması
+        document.getElementById('btn-spawn').addEventListener('click', function() {
+            if (selectedSpawn) {
+                playBeep(900, 'sine', 0.25);
+                post("spawnplayer", {
+                    spawnloc: selectedSpawn,
+                    typeLoc: selectedSpawnType
+                });
+            }
+        });
+    </script>
+</body>
+</html>
