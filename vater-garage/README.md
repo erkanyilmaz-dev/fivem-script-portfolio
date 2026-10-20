@@ -1,27 +1,48 @@
-# Vater Garage — WraithPVP
+# ⚡ Vater Scripts | FiveM Resource Portfolio
 
-QBCore ve oxmysql için hazırlanmış, modern NUI arayüzlü garaj kaynağı.
+Welcome to the official GitHub portfolio of **Vater Scripts**. 
 
-## İçerik
+I specialize in designing and developing highly optimized, innovative, and user-friendly FiveM scripts for **QBCore**, **ESX**, and standalone frameworks. From modern UI designs to complex game mechanics and 3D simulation systems, all resources are crafted with performance and security in mind.
 
-- Kişisel, iş ve çete garaj altyapısı
-- Araç çıkartma, hasar/yakıt/modifikasyonlarını kaydederek geri koyma
-- Araç durumu, çekici ücreti, favori araçlar ve güvenli Citizen ID devri
-- `qb-target` varsa hedef etkileşimi, yoksa E tuşu desteği
-- Sunucu tarafında sahiplik, mesafe ve garaj yetkisi doğrulaması
-- Mobil ekranlara uyumlu modern NUI
+---
 
-## Kurulum
+## 🌟 Featured Projects
 
-1. `vater-garage` klasörünü sunucunuzun `resources` dizinine taşıyın.
-2. [sql/vater-garage.sql](sql/vater-garage.sql) dosyasını veritabanınızda bir kez çalıştırın. Mevcut QBCore `player_vehicles` şemanızda alanlar varsa komutlar onları atlar.
-3. `server.cfg` içine `ensure oxmysql`, `ensure qb-core` satırlarından sonra `ensure vater-garage` ekleyin.
-4. Garaj yerlerini, ücretleri ve meslek garajlarını `config.lua` üzerinden WraithPVP’ye göre düzenleyin.
+| Script Name | Category | Framework | Key Highlights |
+| :--- | :---: | :---: | :--- |
+| **`vater-crime`** | Police / Utility | QBCore / ESX | 3D Crime Scene Reconstruction, 5-minute replay system, evidence gathering. |
+| **`vater-admin`** | Management | QBCore / ESX | Advanced admin panel, real-time telemetry, permission management, modern UI. |
+| **`vater-garage`** | Vehicles / Core | QBCore / ESX | Persistent impound management, real-time state tracking, multi-garage support. |
 
-## Gereksinimler
+---
 
-- qb-core
-- oxmysql
-- qb-target (isteğe bağlı)
+## 🛠️ Technical Stack & Tools
 
-Kişisel araçlar standart `player_vehicles` tablosundan okunur. İş/çete araçlarını desteklemek için ilgili kayıtların `job` veya `gang` sütununda uygun değer bulunmalıdır.
+* **Languages:** Lua, JavaScript (ES6+), HTML5, CSS3/SASS, SQL
+* **Frameworks & Libraries:** React, Vue.js, `ox_lib`, `qb-core`, `es_extended`
+* **Tools & Platforms:** Git, VS Code, Luau, Figma, MySQL/MariaDB
+
+---
+
+## 🚀 Key Advantages
+
+- **⚡ Low Latency & High Optimization:** All scripts run at `0.00ms` – `0.01ms` on idle to maintain peak server performance.
+- **🛡️ Server-Side Security:** Built-in safeguards to protect against unauthorized event triggers and exploit attempts.
+- **🎨 Modern UI/UX Design:** Responsive, crisp, and clean interfaces designed for modern roleplay servers.
+- **🌐 Localization:** Easy-to-translate `config.lua` files supporting multi-language setups (`en`, `tr`, etc.).
+
+---
+
+## 🤝 Contact & Custom Development
+
+Looking for custom FiveM scripts, framework conversions, or UI designs for your server?
+
+* **Discord Community:** [Join Discord Server](ADD_DISCORD_LINK_HERE)
+* **Tebex Store:** [Visit Tebex Store](ADD_TEBEX_LINK_HERE)
+* **GitHub:** [@YOUR_GITHUB_USERNAME](https://github.com/YOUR_GITHUB_USERNAME)
+
+---
+
+<p align="center">
+  <i>Crafted with precision by <b>Vater Scripts</b></i>
+</p>
