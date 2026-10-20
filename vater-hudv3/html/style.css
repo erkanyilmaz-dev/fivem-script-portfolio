@@ -1,0 +1,2257 @@
+/* ==========================================================================
+   VATERPVP ADVANCED MULTI-STYLE HUD v3 - MASTER STYLESHEET
+   ========================================================================== */
+
+:root {
+    --health-color: #ef4444;
+    --armor-color: #3b82f6;
+    --hunger-color: #f59e0b;
+    --thirst-color: #06b6d4;
+    --stamina-color: #10b981;
+    --voice-color: #a855f7;
+    
+    --accent-glow: rgba(255, 255, 255, 0.4);
+    --glass-bg: rgba(0, 0, 0, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.16);
+    --glass-border-active: rgba(255, 255, 255, 0.45);
+    
+    --hud-scale: 1.0;
+    --hud-opacity: 1.0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent !important;
+}
+
+/* --------------------------------------------------------------------------
+   HUD MAIN WRAPPER & DRAG SUPPORT
+   -------------------------------------------------------------------------- */
+#hud-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    opacity: var(--hud-opacity);
+    transform: scale(var(--hud-scale));
+    transform-origin: bottom left;
+    background: transparent !important;
+}
+
+.hud-component {
+    position: absolute;
+    pointer-events: auto;
+    transition: transform 0.2s ease, opacity 0.3s ease;
+    background: transparent;
+}
+
+.hud-component.hidden {
+    display: none !important;
+}
+
+/* Default positions - Positioned cleanly ABOVE GTA V Minimap Radar (bottom ~215px) */
+#status-hud-container {
+    bottom: 215px;
+    left: 30px;
+}
+
+#speedo-hud-container {
+    bottom: 30px;
+    right: 35px;
+}
+
+#street-hud-container {
+    bottom: 272px;
+    left: 30px;
+}
+
+/* Drag mode active visual border - No solid background fill */
+.drag-active {
+    outline: 2px dashed #3b82f6 !important;
+    outline-offset: 4px;
+    cursor: move !important;
+    background: transparent !important;
+    border-radius: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   STREET & LOCATION BANNER
+   -------------------------------------------------------------------------- */
+#street-hud-container .location-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+#street-hud-container .location-icon {
+    font-size: 1.1rem;
+    color: #ec4899;
+    filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.6));
+}
+
+#street-hud-container .location-text {
+    display: flex;
+    flex-direction: column;
+}
+
+#street-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+#zone-name {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   STATUS HUD - BASE LAYOUTS & 20 PRESETS
+   -------------------------------------------------------------------------- */
+#status-items-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: transparent;
+}
+
+.status-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.status-card.talking {
+    animation: voicePulse 1.2s infinite alternate;
+}
+
+@keyframes voicePulse {
+    0% { transform: scale(1.0); filter: drop-shadow(0 0 4px var(--voice-color)); }
+    100% { transform: scale(1.08); filter: drop-shadow(0 0 16px var(--voice-color)); }
+}
+
+/* STYLE 1: Modern Radial Circles */
+#status-hud-container.style-1 #status-items-wrapper, .style-1#status-hud-container #status-items-wrapper { display: flex; gap: 12px; }
+#status-hud-container.style-1 .status-card, .style-1 .status-card {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid var(--glass-border);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+#status-hud-container.style-1 .status-ring, .style-1 .status-ring {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(var(--fill-color) calc(var(--val) * 1%), rgba(255, 255, 255, 0.1) 0);
+    mask: radial-gradient(transparent 58%, #000 60%);
+    -webkit-mask: radial-gradient(transparent 58%, #000 60%);
+}
+#status-hud-container.style-1 .status-icon, .style-1 .status-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.05rem;
+    color: var(--fill-color);
+    filter: drop-shadow(0 0 6px var(--fill-color));
+    z-index: 5;
+    margin: 0 !important;
+}
+#status-hud-container.style-1 .status-val, .style-1 .status-val { display: none !important; }
+
+/* STYLE 2: Minimal Horizontal Bars */
+#status-hud-container.style-2 #status-items-wrapper, .style-2#status-hud-container #status-items-wrapper { display: flex; flex-direction: column; gap: 8px; width: 220px; }
+#status-hud-container.style-2 .status-card, .style-2 .status-card {
+    width: 100%; height: 28px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 0 10px;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+.style-2 .status-ring { display: none !important; }
+.style-2 .status-bar-bg {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: calc(var(--val) * 1%);
+    background: linear-gradient(90deg, var(--fill-color), rgba(255,255,255,0.2));
+    border-radius: 8px;
+    transition: width 0.4s ease;
+    opacity: 0.35;
+}
+.style-2 .status-icon { font-size: 0.9rem; color: var(--fill-color); margin-right: 8px; z-index: 2; position: relative; top: auto; left: auto; transform: none; }
+.style-2 .status-val { font-size: 0.8rem; font-weight: 700; color: #fff; margin-left: auto; z-index: 2; display: block !important; }
+
+/* STYLE 3: Compact Pill Badges */
+#status-hud-container.style-3 #status-items-wrapper, .style-3#status-hud-container #status-items-wrapper { display: flex; gap: 10px; }
+#status-hud-container.style-3 .status-card, .style-3 .status-card {
+    padding: 6px 14px;
+    border-radius: 30px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid var(--glass-border);
+    gap: 8px;
+}
+.style-3 .status-ring { display: none !important; }
+.style-3 .status-bar-bg { display: none !important; }
+.style-3 .status-icon { font-size: 1rem; color: var(--fill-color); position: relative; top: auto; left: auto; transform: none; }
+.style-3 .status-val { font-size: 0.85rem; font-weight: 800; color: #fff; display: block !important; }
+
+/* STYLE 4: Vertical Side Stack */
+#status-hud-container.style-4 #status-items-wrapper, .style-4#status-hud-container #status-items-wrapper { display: flex; flex-direction: column; gap: 10px; }
+#status-hud-container.style-4 .status-card, .style-4 .status-card {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid var(--glass-border);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.style-4 .status-ring { display: none !important; }
+.style-4 .status-bar-bg { display: none !important; }
+.style-4 .status-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.1rem; color: var(--fill-color); z-index: 5; margin: 0 !important; }
+.style-4 .status-val { display: none !important; }
+
+/* STYLE 5: Segmented Block Bars */
+#status-hud-container.style-5 #status-items-wrapper, .style-5#status-hud-container #status-items-wrapper { display: flex; flex-direction: column; gap: 6px; width: 200px; }
+#status-hud-container.style-5 .status-card, .style-5 .status-card {
+    height: 18px; background: rgba(15,23,42,0.8); border-radius: 4px; padding: 2px 6px; gap: 6px; justify-content: flex-start;
+}
+.style-5 .status-ring { display: none !important; }
+.style-5 .status-bar-bg { display: none !important; }
+.style-5 .status-icon { font-size: 0.75rem; color: var(--fill-color); position: relative; top: auto; left: auto; transform: none; }
+.style-5 .status-val { font-size: 0.75rem; font-weight: 700; color: #fff; display: block !important; }
+
+/* STYLE 6: Futuristic Diamond Nodes */
+#status-hud-container.style-6 #status-items-wrapper, .style-6#status-hud-container #status-items-wrapper { display: flex; gap: 14px; }
+#status-hud-container.style-6 .status-card, .style-6 .status-card {
+    width: 44px; height: 44px;
+    transform: rotate(45deg);
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--fill-color);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+.style-6 .status-ring { display: none !important; }
+.style-6 .status-bar-bg { display: none !important; }
+.style-6 .status-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 1.1rem; color: var(--fill-color); z-index: 5; margin: 0 !important; }
+.style-6 .status-val { display: none !important; }
+
+/* STYLE 7: Hexagonal Neon Grid */
+#status-hud-container.style-7 #status-items-wrapper, .style-7#status-hud-container #status-items-wrapper { display: flex; gap: 12px; }
+#status-hud-container.style-7 .status-card, .style-7 .status-card {
+    width: 48px; height: 48px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid var(--fill-color);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.style-7 .status-ring { display: none !important; }
+.style-7 .status-bar-bg { display: none !important; }
+.style-7 .status-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.15rem; color: var(--fill-color); z-index: 5; margin: 0 !important; }
+.style-7 .status-val { display: none !important; }
+
+/* STYLE 8: Cyberpunk Neon Cut */
+#status-hud-container.style-8 #status-items-wrapper, .style-8#status-hud-container #status-items-wrapper { display: flex; gap: 10px; }
+#status-hud-container.style-8 .status-card, .style-8 .status-card {
+    padding: 8px 16px;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    background: rgba(2, 6, 23, 0.85);
+    border-bottom: 2px solid var(--fill-color);
+    gap: 8px;
+}
+.style-8 .status-ring { display: none !important; }
+.style-8 .status-bar-bg { display: none !important; }
+.style-8 .status-icon { font-size: 1rem; color: var(--fill-color); position: relative; top: auto; left: auto; transform: none; }
+.style-8 .status-val { font-size: 0.85rem; font-weight: 900; color: #fff; font-family: 'Orbitron', sans-serif; display: block !important; }
+
+/* STYLE 9: Glassmorphism Floating Cards */
+#status-hud-container.style-9 #status-items-wrapper, .style-9#status-hud-container #status-items-wrapper { display: flex; gap: 12px; }
+#status-hud-container.style-9 .status-card, .style-9 .status-card {
+    padding: 8px 14px; border-radius: 14px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    gap: 8px;
+}
+.style-9 .status-ring { display: none !important; }
+.style-9 .status-bar-bg { display: none !important; }
+.style-9 .status-icon { font-size: 1.1rem; color: var(--fill-color); position: relative; top: auto; left: auto; transform: none; }
+.style-9 .status-val { font-size: 0.85rem; font-weight: 700; color: #fff; display: block !important; }
+
+/* STYLE 10: Curved Semi-Arc Dials */
+#status-hud-container.style-10 #status-items-wrapper, .style-10#status-hud-container #status-items-wrapper { display: flex; gap: 12px; }
+#status-hud-container.style-10 .status-card, .style-10 .status-card {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(15, 23, 42, 0.75);
+    border: 2px solid var(--fill-color);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.style-10 .status-ring { display: none !important; }
+.style-10 .status-bar-bg { display: none !important; }
+.style-10 .status-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.1rem; color: var(--fill-color); z-index: 5; margin: 0 !important; }
+.style-10 .status-val { display: none !important; }
+
+
+/* STYLE 11: Retro Pixel Matrix */
+.style-11#status-hud-container #status-items-wrapper { display: flex; flex-direction: column; gap: 6px; width: 180px; }
+.style-11 .status-card {
+    height: 22px; background: rgba(0,0,0,0.8); border: 2px solid #333; padding: 2px 6px; gap: 6px;
+    font-family: 'Fira Code', monospace;
+}
+.style-11 .status-icon { font-size: 0.8rem; color: var(--fill-color); }
+.style-11 .status-val { font-size: 0.75rem; color: var(--fill-color); font-weight: bold; }
+
+/* STYLE 12: Gradient Wave Fill */
+#status-hud-container.style-12 #status-items-wrapper, .style-12#status-hud-container #status-items-wrapper { display: flex; gap: 10px; }
+#status-hud-container.style-12 .status-card, .style-12 .status-card {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--glass-border);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+#status-hud-container.style-12 .status-icon, .style-12 .status-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.2rem; color: var(--fill-color); z-index: 5; margin: 0 !important; }
+#status-hud-container.style-12 .status-val, .style-12 .status-val { display: none !important; }
+
+/* STYLE 13: OLED Minimalist Lines */
+#status-hud-container.style-13 #status-items-wrapper, .style-13#status-hud-container #status-items-wrapper { display: flex; gap: 16px; }
+#status-hud-container.style-13 .status-card, .style-13 .status-card { gap: 6px; background: transparent; }
+.style-13 .status-icon { font-size: 1rem; color: var(--fill-color); position: relative; top: auto; left: auto; transform: none; }
+.style-13 .status-val { font-size: 0.85rem; font-weight: 600; color: #e2e8f0; display: block !important; }
+
+/* STYLE 14: Tachometer Dial Minis */
+#status-hud-container.style-14 #status-items-wrapper, .style-14#status-hud-container #status-items-wrapper { display: flex; gap: 12px; }
+#status-hud-container.style-14 .status-card, .style-14 .status-card {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(15,23,42,0.65);
+    border: 1px solid var(--fill-color);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#status-hud-container.style-14 .status-icon, .style-14 .status-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.1rem; color: var(--fill-color); z-index: 5; margin: 0 !important; }
+#status-hud-container.style-14 .status-val, .style-14 .status-val { display: none !important; }
+
+/* STYLE 15: Outlined Capsule Rings */
+#status-hud-container.style-15 #status-items-wrapper, .style-15#status-hud-container #status-items-wrapper { display: flex; gap: 10px; }
+#status-hud-container.style-15 .status-card, .style-15 .status-card {
+    padding: 6px 14px; border-radius: 20px;
+    border: 2px solid var(--fill-color);
+    background: rgba(15, 23, 42, 0.5);
+    gap: 8px;
+}
+.style-15 .status-icon { font-size: 0.95rem; color: var(--fill-color); position: relative; top: auto; left: auto; transform: none; }
+.style-15 .status-val { font-size: 0.8rem; font-weight: 800; color: #fff; display: block !important; }
+
+/* STYLE 16: Concentric Dual Rings */
+#status-hud-container.style-16 #status-items-wrapper, .style-16#status-hud-container #status-items-wrapper { display: flex; gap: 12px; }
+#status-hud-container.style-16 .status-card, .style-16 .status-card {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px double var(--fill-color);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#status-hud-container.style-16 .status-icon, .style-16 .status-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.1rem; color: var(--fill-color); z-index: 5; margin: 0 !important; }
+#status-hud-container.style-16 .status-val, .style-16 .status-val { display: none !important; }
+
+/* STYLE 17: Dynamic Percentage Badges */
+#status-hud-container.style-17 #status-items-wrapper, .style-17#status-hud-container #status-items-wrapper { display: flex; gap: 10px; }
+#status-hud-container.style-17 .status-card, .style-17 .status-card {
+    padding: 8px 12px; border-radius: 10px;
+    background: rgba(15, 23, 42, 0.55);
+    border-left: 3px solid var(--fill-color);
+    gap: 8px;
+}
+.style-17 .status-icon { font-size: 1rem; color: var(--fill-color); position: relative; top: auto; left: auto; transform: none; }
+.style-17 .status-val { font-size: 0.85rem; font-weight: 800; color: #fff; display: block !important; }
+
+/* STYLE 18: Cinematic Bottom Bar */
+.style-18#status-hud-container { left: 50% !important; transform: translateX(-50%); bottom: 20px !important; }
+.style-18#status-hud-container #status-items-wrapper {
+    display: flex; gap: 18px; padding: 10px 24px; border-radius: 30px;
+    background: rgba(2, 6, 23, 0.65); border: 1px solid var(--glass-border);
+}
+.style-18 .status-card { gap: 8px; }
+.style-18 .status-icon { font-size: 1.1rem; color: var(--fill-color); position: relative; top: auto; left: auto; transform: none; }
+.style-18 .status-val { font-size: 0.85rem; font-weight: 700; color: #fff; display: block !important; }
+
+/* STYLE 19: Micro Icon Dials */
+#status-hud-container.style-19 #status-items-wrapper, .style-19#status-hud-container #status-items-wrapper { display: flex; gap: 8px; }
+#status-hud-container.style-19 .status-card, .style-19 .status-card {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid var(--glass-border);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#status-hud-container.style-19 .status-icon, .style-19 .status-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1rem; color: var(--fill-color); z-index: 5; margin: 0 !important; }
+#status-hud-container.style-19 .status-val, .style-19 .status-val { display: none !important; }
+
+/* STYLE 20: Top Grid Matrix */
+.style-20#status-hud-container { top: 30px !important; left: 30px !important; bottom: auto !important; }
+.style-20#status-hud-container #status-items-wrapper {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.style-20 .status-card {
+    padding: 8px 14px; border-radius: 8px;
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid var(--glass-border);
+    gap: 8px;
+}
+.style-20 .status-icon { font-size: 1rem; color: var(--fill-color); }
+.style-20 .status-val { font-size: 0.8rem; font-weight: 700; color: #fff; }
+
+
+/* --------------------------------------------------------------------------
+   SPEEDOMETER - 15 PRESET STYLES
+   -------------------------------------------------------------------------- */
+
+.speedo-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    min-width: auto;
+}
+
+.speedo-main {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.speed-val {
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
+    font-family: 'Orbitron', 'Inter', sans-serif;
+    letter-spacing: -1px;
+}
+
+.speed-unit {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+
+.gear-badge {
+    position: absolute;
+    top: 12px; right: 14px;
+    background: var(--accent-glow);
+    color: #fff; font-weight: 800;
+    font-size: 0.85rem; padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.speedo-details {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.detail-item.active { color: #10b981; }
+.detail-item.warning { color: #ef4444; }
+
+/* --------------------------------------------------------------------------
+   EXACT RACING CAR CIRCULAR TACHOMETER GAUGE (USER REQUESTED PHOTO MATCH)
+   -------------------------------------------------------------------------- */
+.racing-tacho-cluster {
+    display: flex; justify-content: center; align-items: center; padding: 4px;
+}
+
+.tacho-bezel {
+    width: 210px; height: 210px; border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(30, 41, 59, 0.95), rgba(10, 15, 26, 0.98));
+    border: 7px solid #1a2233;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 25px rgba(0,0,0,0.9), 0 0 15px rgba(56, 189, 248, 0.2);
+    position: relative; display: flex; justify-content: center; align-items: center;
+}
+
+/* Redline arc (8.5 to 10 RPM) */
+.tacho-redline-arc {
+    position: absolute; top: 12px; right: 18px; width: 60px; height: 60px; border-radius: 50%;
+    border-top: 5px solid #ef4444; border-right: 5px solid #ef4444;
+    transform: rotate(15deg); opacity: 0.95; box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+    pointer-events: none;
+}
+
+/* Dynamic Glowing Needle Pointer */
+.tacho-needle-indicator {
+    position: absolute; bottom: 50%; left: calc(50% - 2px); width: 4px; height: 84px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.2), #67e8f9, #ffffff);
+    border-radius: 3px; transform-origin: bottom center;
+    transition: transform 0.08s cubic-bezier(0.1, 0.9, 0.2, 1);
+    box-shadow: 0 0 12px #38bdf8, 0 0 20px #38bdf8; z-index: 8;
+}
+
+/* Inner RPM Numbers 0 to 10 */
+.tacho-ticks {
+    position: absolute; width: 100%; height: 100%; border-radius: 50%; pointer-events: none;
+}
+
+.t-num {
+    position: absolute; font-family: 'Rajdhani', 'Orbitron', sans-serif;
+    font-size: 1.15rem; font-weight: 800; color: #ffffff;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+}
+
+.t-num.redline { color: #ef4444; text-shadow: 0 0 8px rgba(239, 68, 68, 0.8); }
+
+.t-num.n0  { bottom: 22px; left: 62px; }
+.t-num.n2  { bottom: 58px; left: 24px; }
+.t-num.n3  { top: 108px; left: 18px; }
+.t-num.n4  { top: 62px;  left: 28px; }
+.t-num.n5  { top: 30px;  left: 56px; }
+.t-num.n6  { top: 18px;  left: 98px; }
+.t-num.n7  { top: 28px;  right: 56px; }
+.t-num.n8  { top: 60px;  right: 28px; }
+.t-num.n9  { top: 106px; right: 18px; }
+.t-num.n10 { bottom: 56px; right: 22px; }
+
+/* Center Display Screen */
+.tacho-center-screen {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.95));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.8); z-index: 10;
+}
+
+.top-speed-row {
+    display: flex; align-items: baseline; gap: 4px; margin-top: -6px;
+}
+
+.cyan-speed-val {
+    font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900;
+    color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+    line-height: 1; letter-spacing: -1px;
+}
+
+.speed-unit-lbl {
+    font-size: 0.58rem; font-weight: 700; color: rgba(255, 255, 255, 0.6);
+    font-family: 'Inter', sans-serif;
+}
+
+.bottom-gear-row {
+    display: flex; align-items: center; gap: 6px; margin-top: 2px;
+}
+
+.trans-mode-badge {
+    background: #dc2626; color: #fff; font-weight: 900; font-size: 0.62rem;
+    padding: 1.5px 5px; border-radius: 10px; box-shadow: 0 0 8px rgba(220, 38, 38, 0.8);
+    letter-spacing: 0.5px;
+}
+
+.big-gear-num {
+    font-family: 'Rajdhani', 'Orbitron', sans-serif; font-size: 1.6rem; font-weight: 900;
+    color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.9); line-height: 1;
+}
+
+/* Style Card Mini Preview for Racing Tachometer */
+.prev-racing-tacho {
+    background: transparent !important; padding: 0 !important;
+}
+.m-tacho-circle {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(15,23,42,0.9), rgba(2,6,23,0.95));
+    border: 2px solid #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    position: relative;
+}
+.m-cyan-sp { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 900; color: #38bdf8; line-height: 1; }
+.m-mt-badge { font-size: 0.45rem; background: #dc2626; color: #fff; padding: 0 3px; border-radius: 4px; position: absolute; bottom: 4px; left: 4px; }
+.m-gear-big { font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; font-weight: 900; color: #fff; position: absolute; bottom: 2px; right: 8px; line-height: 1; }
+
+/* RPM Progress Bar */
+.rpm-progress-bar {
+    position: absolute; top: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #f59e0b, #ef4444);
+    box-shadow: 0 0 10px #3b82f6; transition: width 0.15s ease;
+    border-radius: 20px 20px 0 0;
+}
+
+.gear-badge {
+    position: absolute; top: 12px; right: 16px;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: #fff; font-weight: 900; font-size: 0.85rem; padding: 3px 10px;
+    border-radius: 8px; box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+}
+
+.gear-pill {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: #fff; font-weight: 800; font-size: 0.75rem; padding: 2px 8px;
+    border-radius: 6px; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+/* Ferrari / Porsche Dual Gauge Cluster (Style 2) */
+.dual-cluster {
+    display: flex; align-items: center; gap: 16px; position: relative; padding: 10px 0;
+}
+.gauge-dial {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    position: relative;
+}
+.rpm-gauge .dial-ticks {
+    position: absolute; top: 8px; width: 80%; display: flex; justify-content: space-between;
+    font-size: 0.6rem; font-weight: 800; color: rgba(255,255,255,0.6);
+}
+.needle-indicator {
+    position: absolute; bottom: 50%; left: calc(50% - 1.5px); width: 3px; height: 34px;
+    background: linear-gradient(to top, #ef4444, #fca5a5);
+    border-radius: 2px; transform-origin: bottom center;
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px #ef4444; z-index: 5;
+}
+.gauge-lbl { font-size: 0.55rem; font-weight: 800; color: rgba(255,255,255,0.4); position: absolute; bottom: 8px; }
+.gear-center-badge {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff; font-weight: 900; font-size: 1rem;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+}
+
+/* Classic Racing Analog Needle Cluster (Style 8) */
+.analog-needle-cluster {
+    display: flex; align-items: center; gap: 16px; padding: 8px 12px;
+}
+.needle-face {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,0,0,0.7);
+    position: relative; display: flex; justify-content: center; align-items: center;
+}
+.face-numbers {
+    position: absolute; width: 84%; height: 84%; border-radius: 50%;
+    display: flex; justify-content: space-around; font-size: 0.65rem; font-weight: 900; color: rgba(255,255,255,0.7);
+}
+.needle-cap {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: linear-gradient(135deg, #64748b, #1e293b);
+    border: 1px solid rgba(255,255,255,0.4); z-index: 6;
+    box-shadow: 0 0 6px rgba(0,0,0,0.8);
+}
+.digital-center-readout {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+}
+
+/* Formula 1 Shift Lights (Style 15) */
+.f1-shift-lights {
+    display: flex; gap: 6px; width: 100%; justify-content: center; margin-bottom: 8px;
+    padding: 4px 10px; background: rgba(0,0,0,0.4); border-radius: 12px;
+}
+.f1-led {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.15s ease;
+}
+.f1-led.led-green.lit { background: #22c55e; box-shadow: 0 0 10px #22c55e; }
+.f1-led.led-yellow.lit { background: #eab308; box-shadow: 0 0 10px #eab308; }
+.f1-led.led-red.lit { background: #ef4444; box-shadow: 0 0 12px #ef4444; animation: redlineBlink 0.2s infinite alternate; }
+@keyframes redlineBlink { from { opacity: 1; } to { opacity: 0.4; } }
+
+/* McLaren 360 Radial Ring (Style 5) */
+.radial-360-ring {
+    width: 140px; height: 140px; border-radius: 50%;
+    padding: 6px; display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.3); transition: background 0.1s ease;
+}
+.inner-ring-content {
+    width: 100%; height: 100%; border-radius: 50%;
+    background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px;
+}
+
+/* SPEEDO STYLE 1: Supercar Arc Dial */
+.speedo-style-1 .speedo-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* SPEEDO STYLE 2: Modern Minimalist Ring Dial (Image 3) */
+.speedo-style-2 .speedo-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+.modern-ring-cluster {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ring-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+.ring-bg-circle {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 4;
+}
+.ring-fill-circle {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 282;
+    transition: stroke-dashoffset 0.1s linear;
+}
+.ring-center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    line-height: 1;
+}
+.ring-speed-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+    letter-spacing: -1px;
+}
+.ring-unit-txt {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.65);
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+}
+.ring-sub-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+.ring-gear-badge {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #3b82f6;
+}
+.ring-status-icons {
+    display: flex;
+    gap: 6px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.35);
+}
+.ring-status-icons i.active { color: #fff; }
+.ring-status-icons i.warning { color: #ef4444; }
+
+/* SPEEDO STYLE 3: Minimalist Numeric */
+.speedo-style-3 .speedo-box {
+    background: transparent; border: none; box-shadow: none;
+}
+.speedo-style-3 .speed-val { font-size: 4.2rem; text-shadow: 0 4px 20px rgba(255, 255, 255, 0.3); }
+
+/* SPEEDO STYLE 4: Custom Drift Compact HUD */
+.speedo-style-4 .speedo-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+.drift-compact-hud {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: transparent;
+    padding: 10px;
+    border-radius: 12px;
+}
+.drift-speed-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+.drift-speed-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.4);
+    line-height: 1;
+}
+.drift-unit {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.6);
+}
+.drift-rpm-bar-container {
+    width: 140px;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+.drift-rpm-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #ff3333);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+.drift-gear-row {
+    margin-top: 6px;
+}
+.drift-gear-val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #ff3333;
+    letter-spacing: 0.5px;
+}
+
+/* SPEEDO STYLE 5: Neon Full Radial Ring */
+.speedo-style-5 .speedo-box {
+    background: transparent; border: none; box-shadow: none; padding: 0;
+}
+
+/* SPEEDO STYLE 6: Retro 80s LED Dashboard */
+.speedo-style-6 .speedo-box {
+    font-family: 'Fira Code', monospace;
+    background: transparent !important; border: none !important; box-shadow: none !important;
+}
+.speedo-style-6 .speed-val { color: #22c55e; text-shadow: 0 0 10px rgba(34, 197, 94, 0.6); }
+
+/* SPEEDO STYLE 7: Futuristic Hologram HUD */
+.speedo-style-7 .speedo-box {
+    background: transparent !important; border: none !important; box-shadow: none !important;
+}
+.speedo-style-7 .speed-val { color: #38bdf8; text-shadow: 0 0 12px rgba(56, 189, 248, 0.6); }
+
+/* SPEEDO STYLE 8: Classic Racing Needle Dial (Porsche GT3 Center Tachometer) */
+.speedo-style-8 .speedo-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+.racing-tacho-cluster {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+}
+.tacho-bezel {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, #1b1c23, #090a0f);
+    border: 5px solid #282a36;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.9);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tacho-needle-indicator {
+    position: absolute;
+    bottom: 50%;
+    left: calc(50% - 1px);
+    width: 2px;
+    height: 68px;
+    background: #ff5555;
+    border-radius: 2px;
+    transform-origin: bottom center;
+    transition: transform 0.08s cubic-bezier(0.1, 0.9, 0.2, 1);
+    box-shadow: 0 0 8px #ff5555;
+    z-index: 8;
+}
+.tacho-needle-cap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #444;
+    z-index: 9;
+}
+.tacho-redline-arc {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border-top: 4px solid #ff5555;
+    border-right: 4px solid #ff5555;
+    transform: rotate(18deg);
+    opacity: 0.8;
+    pointer-events: none;
+}
+.tacho-ticks {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.tacho-ticks span {
+    position: absolute;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.85);
+}
+.tacho-ticks span.redline {
+    color: #ff5555;
+    text-shadow: 0 0 5px rgba(255,85,85,0.5);
+}
+.tacho-ticks .n0 { bottom: 20px; left: 52px; }
+.tacho-ticks .n1 { bottom: 42px; left: 28px; }
+.tacho-ticks .n2 { top: 92px; left: 16px; }
+.tacho-ticks .n3 { top: 58px; left: 22px; }
+.tacho-ticks .n4 { top: 30px; left: 42px; }
+.tacho-ticks .n5 { top: 18px; left: 50%; transform: translateX(-50%); }
+.tacho-ticks .n6 { top: 30px; right: 42px; }
+.tacho-ticks .n7 { top: 58px; right: 22px; }
+.tacho-ticks .n8 { top: 92px; right: 16px; }
+.tacho-ticks .n9 { bottom: 42px; right: 28px; }
+.tacho-ticks .n10 { bottom: 20px; right: 52px; }
+
+.tacho-indicators {
+    position: absolute;
+    bottom: 40px;
+    display: flex;
+    gap: 6px;
+    font-size: 0.55rem;
+    color: rgba(255,255,255,0.15);
+}
+.tacho-indicators i.active {
+    color: #f59e0b;
+    text-shadow: 0 0 8px #f59e0b;
+}
+.tacho-center-screen {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #0b0c10;
+    border: 1.5px solid #20222f;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+    z-index: 6;
+}
+
+/* SPEEDO STYLE 9: Hexagon Carbon Gauge */
+.speedo-style-9 .speedo-box {
+    background: transparent !important; border: none !important; box-shadow: none !important;
+}
+
+/* SPEEDO STYLE 10: AMG Performance Sport Dial */
+.speedo-style-10 .speedo-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+.amg-sport-cluster {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0;
+}
+.amg-center-dial {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #13151b, #050608);
+    border: 4px solid #1a1e24;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.9), 0 5px 15px rgba(0,0,0,0.6);
+    position: relative;
+}
+.amg-ticks {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.amg-ticks span {
+    position: absolute;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 850;
+    color: rgba(255,255,255,0.75);
+}
+.amg-ticks span.redline { color: #ff3333; }
+.amg-ticks span:nth-child(1) { bottom: 12px; left: 24px; }
+.amg-ticks span:nth-child(2) { top: 45px; left: 12px; }
+.amg-ticks span:nth-child(3) { top: 12px; left: 50%; transform: translateX(-50%); }
+.amg-ticks span:nth-child(4) { top: 45px; right: 12px; }
+.amg-ticks span:nth-child(5) { bottom: 12px; right: 24px; }
+
+.amg-needle {
+    position: absolute;
+    bottom: 50%;
+    left: calc(50% - 1px);
+    width: 2px;
+    height: 52px;
+    background: #ff2222;
+    border-radius: 1px;
+    transform-origin: bottom center;
+    transition: transform 0.08s cubic-bezier(0.1, 0.9, 0.2, 1);
+    box-shadow: 0 0 8px #ff2222;
+    z-index: 4;
+}
+.amg-needle-cap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #000;
+    border: 2px solid #333;
+    z-index: 5;
+}
+.amg-center-display {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+.amg-gear {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #ffc83b;
+    margin-bottom: 2px;
+}
+.amg-speed {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+.amg-unit {
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+}
+.amg-flank-gauge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+}
+.flank-bar-track {
+    width: 6px;
+    height: 80px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+}
+.flank-bar-fill {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to top, #ffffff, #64748b);
+    transition: height 0.3s ease;
+}
+
+/* SPEEDO STYLE 11: JDM Legend White Dial */
+.speedo-style-11 .speedo-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+.forza-horizon-cluster {
+    position: relative;
+    width: 230px;
+    height: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.forza-horizon-cluster {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.forza-bezel {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 50%;
+    background: transparent;
+}
+.forza-ticks {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1.2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.forza-ticks span {
+    position: absolute;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 850;
+    color: rgba(255, 255, 255, 0.85);
+}
+.forza-ticks span.redline {
+    color: #ff3838;
+}
+.forza-ticks span:nth-child(1) { bottom: 15px; left: 45px; }
+.forza-ticks span:nth-child(2) { bottom: 42px; left: 24px; }
+.forza-ticks span:nth-child(3) { top: 92px; left: 12px; }
+.forza-ticks span:nth-child(4) { top: 56px; left: 18px; }
+.forza-ticks span:nth-child(5) { top: 28px; left: 40px; }
+.forza-ticks span:nth-child(6) { top: 16px; left: 50%; transform: translateX(-50%); }
+.forza-ticks span:nth-child(7) { top: 28px; right: 40px; }
+.forza-ticks span:nth-child(8) { top: 56px; right: 18px; }
+.forza-ticks span:nth-child(9) { top: 92px; right: 12px; }
+.forza-ticks span:nth-child(10) { bottom: 42px; right: 24px; color: #ff3838; }
+
+.forza-needle {
+    position: absolute;
+    bottom: 50%;
+    left: calc(50% - 1px);
+    width: 1.5px;
+    height: 68px;
+    background: #ffffff;
+    border-radius: 1px;
+    transform-origin: bottom center;
+    transition: transform 0.08s cubic-bezier(0.1, 0.9, 0.2, 1);
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+    z-index: 4;
+}
+.forza-needle-cap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #000;
+    border: 2px solid #fff;
+    z-index: 5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.forza-dashboard-bottom {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+}
+.forza-indicators-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+}
+.forza-indicators-left .ind-lbl {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.5px;
+}
+.forza-indicators-left .ind-lbl.active {
+    color: #06b6d4;
+    text-shadow: 0 0 8px rgba(6, 182, 212, 0.8);
+}
+
+.forza-gear-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid #06b6d4;
+    background: rgba(6, 182, 212, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+}
+.forza-gear-val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #06b6d4;
+    text-shadow: 0 0 6px rgba(6, 182, 212, 0.6);
+}
+
+.forza-speed-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 0.9;
+}
+.forza-unit-lbl {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 850;
+    color: #fff;
+}
+.forza-speed-val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 3px 10px rgba(255, 255, 255, 0.35);
+    letter-spacing: -1px;
+}
+
+/* SPEEDO STYLE 12: MotoGP GP-Track Dash */
+.speedo-style-12 .speedo-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+.motogp-track-dash {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    width: auto;
+}
+.motogp-shift-bar {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+.shift-led {
+    width: 14px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.shift-led.green.lit { background: #2ed573; box-shadow: 0 0 8px #2ed573; }
+.shift-led.yellow.lit { background: #ffa502; box-shadow: 0 0 8px #ffa502; }
+.shift-led.red.lit { background: #ff4757; box-shadow: 0 0 10px #ff4757; }
+.motogp-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.motogp-lcd {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1;
+}
+.lcd-speed {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #fff;
+}
+.lcd-unit {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 700;
+}
+.telemetry {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.58rem;
+    color: #70a1ff;
+    font-family: monospace;
+}
+.motogp-tacho {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #000;
+    border: 2px solid #333;
+    position: relative;
+}
+.m-ticks {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.m-ticks span {
+    position: absolute;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.7);
+}
+.m-ticks span.red { color: #ff4757; }
+.m-ticks span:nth-child(1) { bottom: 8px; left: 16px; }
+.m-ticks span:nth-child(2) { top: 30px; left: 8px; }
+.m-ticks span:nth-child(3) { top: 8px; left: 50%; transform: translateX(-50%); }
+.m-ticks span:nth-child(4) { top: 30px; right: 8px; }
+
+.m-needle {
+    position: absolute;
+    bottom: 50%;
+    left: calc(50% - 1px);
+    width: 2px;
+    height: 38px;
+    background: #ffa502;
+    transform-origin: bottom center;
+    transition: transform 0.08s cubic-bezier(0.1, 0.9, 0.2, 1);
+    box-shadow: 0 0 6px #ffa502;
+    z-index: 4;
+}
+.m-cap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #222;
+    border: 2px solid #555;
+    z-index: 5;
+}
+.m-gear {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #2ed573;
+}
+
+/* SPEEDO STYLE 13: Modern Minimalist Ring Dial (Image 3) */
+.speedo-style-13 .speedo-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* SPEEDO STYLE 14: Ferrari / Porsche Dual Gauge Cluster */
+.speedo-style-14 .speedo-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+.dual-cluster-real {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0;
+}
+.real-dial {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #1e1e28, #0a0a0f);
+    border: 3.5px solid #2d2e3d;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.85);
+    position: relative;
+}
+.dial-bezel {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.ticks-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.rpm-dial .ticks-container span {
+    position: absolute;
+    font-size: 0.68rem;
+    font-weight: 850;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Rajdhani', sans-serif;
+}
+.rpm-dial .ticks-container span:nth-child(1) { bottom: 10px; left: 20px; }
+.rpm-dial .ticks-container span:nth-child(2) { top: 32px; left: 10px; }
+.rpm-dial .ticks-container span:nth-child(3) { top: 8px; left: 50%; transform: translateX(-50%); }
+.rpm-dial .ticks-container span:nth-child(4) { top: 32px; right: 10px; }
+.rpm-dial .ticks-container span:nth-child(5) { bottom: 10px; right: 20px; color: #ff3b30; }
+
+.speed-dial .ticks-container span {
+    position: absolute;
+    font-size: 0.65rem;
+    font-weight: 850;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Rajdhani', sans-serif;
+}
+.speed-dial .ticks-container span:nth-child(1) { bottom: 10px; left: 20px; }
+.speed-dial .ticks-container span:nth-child(2) { top: 32px; left: 8px; }
+.speed-dial .ticks-container span:nth-child(3) { top: 6px; left: 50%; transform: translateX(-50%); }
+.speed-dial .ticks-container span:nth-child(4) { top: 32px; right: 8px; }
+.speed-dial .ticks-container span:nth-child(5) { bottom: 10px; right: 20px; }
+
+.dial-needle {
+    position: absolute;
+    bottom: 50%;
+    left: calc(50% - 1px);
+    width: 2px;
+    height: 40px;
+    background: #ff3b30;
+    border-radius: 2px;
+    transform-origin: bottom center;
+    transition: transform 0.08s cubic-bezier(0.1, 0.9, 0.2, 1);
+    box-shadow: 0 0 6px rgba(255, 59, 48, 0.85);
+    z-index: 4;
+}
+.dial-cap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #111;
+    border: 1.5px solid #555;
+    z-index: 5;
+}
+.dial-label {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.5rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.digital-speed-readout {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+.digital-speed-readout .speed-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+.digital-speed-readout .unit-txt {
+    font-size: 0.5rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 700;
+}
+.center-gear-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #f59e0b, #d97706);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+    z-index: 10;
+}
+.center-gear-box .label {
+    font-size: 0.4rem;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.75);
+}
+.center-gear-box .value {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #000;
+    line-height: 1;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* SPEEDO STYLE 15: Linear Segmented Bar */
+.speedo-style-15 .speedo-box {
+    width: 270px; border-radius: 16px; padding: 14px 20px;
+}
+
+/* --------------------------------------------------------------------------
+   GLASSMORPHISM EDITOR MODAL (/hud) - NO SCREEN OVERLAY BLUR/BLACKOUT
+   -------------------------------------------------------------------------- */
+#editor-modal {
+    position: absolute;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+#editor-modal.hidden { display: none !important; }
+
+.glass-container {
+    width: 1020px;
+    height: 700px;
+    pointer-events: auto;
+    background: rgba(18, 18, 22, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 26px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.35);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalAppear 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   LARGE PROMINENT SHOWCASE CARDS (GLASSMORPHISM STYLE)
+   -------------------------------------------------------------------------- */
+.style-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
+}
+
+.showcase-card {
+    display: flex; flex-direction: column; padding: 0 !important;
+    height: 200px; border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    overflow: hidden; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.showcase-card:hover {
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 255, 255, 0.12) !important;
+}
+
+.showcase-card.active {
+    border: 1.5px solid rgba(255, 255, 255, 0.55) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+}
+
+.showcase-graphic-area {
+    height: 145px; width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    display: flex; justify-content: center; align-items: center;
+    position: relative; overflow: hidden;
+}
+
+.showcase-footer-area {
+    height: 55px; width: 100%;
+    padding: 0 18px; background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.showcase-titles { display: flex; flex-direction: column; gap: 2px; }
+.showcase-category { font-size: 0.65rem; font-weight: 800; color: rgba(255, 255, 255, 0.45); letter-spacing: 1px; }
+.showcase-name { font-size: 0.92rem; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; }
+
+/* Car Speedometer Preview */
+.prev-zxl-car { background: transparent !important; border: none !important; padding: 0 !important; }
+.zxl-outer-ring {
+    width: 105px; height: 105px; border-radius: 50%;
+    background: transparent !important;
+    border: 6px solid rgba(255,255,255,0.1);
+    border-left: 6px solid #ffffff; border-top: 6px solid #ffffff;
+    display: flex; justify-content: center; align-items: center; position: relative;
+}
+.zxl-inner-screen { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.zxl-unit-tag { font-size: 0.68rem; font-weight: 800; color: rgba(255,255,255,0.6); }
+.zxl-speed-num { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+.zxl-fuel-indicator { position: absolute; bottom: 8px; right: 12px; color: #ffffff; font-size: 0.8rem; filter: drop-shadow(0 0 6px rgba(255,255,255,0.8)); }
+
+/* Motorcycle Speedometer Preview */
+.prev-smokey-moto { background: transparent !important; border: none !important; padding: 0 !important; }
+.smokey-poly-frame {
+    width: 190px; height: 95px;
+    clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+    background: linear-gradient(180deg, rgba(30,30,38,0.95), rgba(10,10,15,0.98));
+    border-bottom: 3.5px solid #ffffff;
+    box-shadow: 0 0 22px rgba(255, 255, 255, 0.3);
+    display: flex; justify-content: space-between; align-items: center; padding: 0 16px;
+}
+.smokey-italic-speed { font-family: 'Orbitron', sans-serif; font-size: 2.7rem; font-weight: 900; font-style: italic; color: #ffffff; text-shadow: 0 0 16px rgba(255,255,255,0.7); line-height: 1; }
+.smokey-center-readout { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.smokey-sub-icons { display: flex; gap: 10px; font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+.smokey-unit-tag { font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.45); text-transform: uppercase; }
+.smokey-left-leds, .smokey-right-leds { display: flex; flex-direction: column; gap: 4px; transform: skewX(-15deg); }
+.s-led { width: 16px; height: 5px; background: rgba(255,255,255,0.15); border-radius: 1px; }
+.s-led.lit { background: #ffffff; box-shadow: 0 0 8px #fff; }
+.s-led.yel.lit { background: #ffffff; box-shadow: 0 0 8px #fff; }
+
+@keyframes modalAppear {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 28px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+}
+
+.editor-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo-icon {
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.06));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.35rem; color: #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-icon:hover {
+    transform: rotate(10deg) scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+}
+
+.editor-title h2 {
+    font-size: 1.3rem; font-weight: 800; color: #fff; letter-spacing: 0.8px;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.editor-title .sub-title {
+    font-size: 0.72rem; font-weight: 700; color: rgba(255, 255, 255, 0.65); letter-spacing: 1.5px;
+}
+
+.header-actions {
+    display: flex; gap: 10px;
+}
+
+.glass-btn {
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff; font-weight: 700; font-size: 0.85rem;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(220, 225, 235, 0.85));
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    color: #050508;
+    font-weight: 800;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.25);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #ffffff, #e5e7eb);
+    color: #000;
+    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.25); color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.45); color: #ffffff;
+}
+
+.btn-danger {
+    background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.35); color: #fca5a5;
+}
+
+.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.5); color: #ffffff;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+.btn-close {
+    width: 38px; height: 38px; padding: 0; justify-content: center; border-radius: 50%;
+}
+
+.editor-body {
+    display: flex; flex: 1; overflow: hidden;
+}
+
+.editor-sidebar {
+    width: 260px;
+    background: transparent;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+}
+
+.nav-tab {
+    padding: 14px 18px; border-radius: 14px; border: 1px solid transparent;
+    background: transparent; color: rgba(255, 255, 255, 0.65);
+    font-weight: 600; font-size: 0.88rem; text-align: left;
+    cursor: pointer; display: flex; align-items: center; gap: 12px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-tab:hover {
+    background: rgba(255, 255, 255, 0.06); color: #ffffff; transform: translateX(3px);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.nav-tab.active {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
+    color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.08);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.editor-content {
+    flex: 1; padding: 28px; overflow-y: auto;
+}
+
+.editor-content::-webkit-scrollbar {
+    width: 6px;
+}
+.editor-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+.editor-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+.editor-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-header { margin-bottom: 22px; }
+.panel-header h3 { font-size: 1.15rem; font-weight: 800; color: #fff; }
+.panel-header p { font-size: 0.8rem; color: rgba(255, 255, 255, 0.55); margin-top: 4px; }
+
+/* Grid of Style Options */
+.style-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+}
+
+.style-card-option {
+    padding: 14px 18px; border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.style-card-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.08);
+}
+
+.style-card-option.active {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.style-card-option .card-info {
+    display: flex; align-items: center; gap: 10px;
+}
+
+.style-card-option .card-icon {
+    font-size: 1rem; color: #ffffff;
+    width: 30px; height: 30px; border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex; justify-content: center; align-items: center;
+}
+
+.style-card-option.active .card-icon {
+    background: #ffffff; color: #000; box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}
+
+.style-card-option .card-title { font-weight: 700; font-size: 0.88rem; color: #fff; }
+
+.style-card-option .badge {
+    font-size: 0.72rem; padding: 4px 10px; border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff; font-weight: 700;
+}
+
+/* Color & Theme Tab */
+.theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.theme-card {
+    padding: 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.theme-card:hover {
+    background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.3); transform: translateY(-2px);
+}
+.theme-card.active { border-color: rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.12); box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); }
+.theme-preview { width: 100%; height: 28px; border-radius: 8px; box-shadow: inset 0 0 8px rgba(0,0,0,0.4); }
+.theme-card span { font-size: 0.8rem; font-weight: 700; color: #fff; }
+
+.glass-bg-preview { background: linear-gradient(90deg, #ffffff, #94a3b8); border: 1px solid rgba(255, 255, 255, 0.4); }
+.cyber-bg { background: linear-gradient(90deg, #06b6d4, #a855f7); }
+.gold-bg { background: linear-gradient(90deg, #f59e0b, #d97706); }
+.emerald-bg { background: linear-gradient(90deg, #10b981, #059669); }
+.sunset-bg { background: linear-gradient(90deg, #f97316, #ef4444); }
+.purple-bg { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+.crimson-bg { background: linear-gradient(90deg, #dc2626, #991b1b); }
+.oled-bg { background: linear-gradient(90deg, #ffffff, #64748b); }
+
+.custom-color-picker { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.picker-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 16px; background: rgba(255, 255, 255, 0.04); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+.picker-row:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.25); }
+.picker-row label { font-size: 0.85rem; font-weight: 700; color: #fff; }
+.picker-row input[type="color"] {
+    width: 32px; height: 32px; border: none; border-radius: 50%; cursor: pointer; background: transparent;
+}
+
+/* Layout & Scale Tab */
+.setting-controls { display: flex; flex-direction: column; gap: 20px; }
+.control-group { display: flex; flex-direction: column; gap: 8px; }
+.control-label { display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; color: #fff; }
+.control-group input[type="range"] {
+    width: 100%; accent-color: #ffffff; cursor: pointer; height: 6px; border-radius: 4px; background: rgba(255, 255, 255, 0.15);
+}
+
+.unit-toggle { display: flex; gap: 10px; }
+.unit-btn {
+    flex: 1; padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04); color: rgba(255, 255, 255, 0.7); font-weight: 800; cursor: pointer;
+    transition: all 0.25s ease;
+}
+.unit-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+.unit-btn.active { background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(220, 220, 220, 0.85)); border-color: #ffffff; color: #000; box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25); }
+
+/* Toggles Tab */
+.toggle-list { display: flex; flex-direction: column; gap: 10px; }
+.toggle-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px; background: rgba(255, 255, 255, 0.04); border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer;
+    transition: all 0.2s ease;
+}
+.toggle-item:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.25); }
+.toggle-item span { font-weight: 700; font-size: 0.88rem; color: #fff; display: flex; align-items: center; gap: 10px; }
+.toggle-item input { display: none; }
+.slider-switch {
+    width: 48px; height: 26px; background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px; position: relative; transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.slider-switch::before {
+    content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px;
+    background: #fff; border-radius: 50%; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.toggle-item input:checked + .slider-switch { background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(200, 200, 200, 0.7)); box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+.toggle-item input:checked + .slider-switch::before { transform: translateX(22px); background: #000; }
+
+/* Footer */
+.editor-footer {
+    padding: 18px 28px; border-top: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.editor-footer span { font-size: 0.78rem; font-weight: 500; color: rgba(255,255,255,0.6); display: flex; align-items: center; gap: 8px; }
+
+/* Drag Overlay Banner */
+#drag-overlay {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    pointer-events: none;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: auto;
+    height: auto;
+}
+#drag-overlay.hidden { display: none !important; }
+.drag-banner {
+    pointer-events: auto;
+    padding: 14px 28px;
+    background: rgba(20, 20, 28, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 18px; color: #fff; font-weight: 800;
+    display: flex; align-items: center; gap: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.drag-banner i { font-size: 1.2rem; color: #60a5fa; animation: handBounce 1s infinite alternate; }
+@keyframes handBounce { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+.drag-banner span { font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.8); }
+
+/* --------------------------------------------------------------------------
+   MINI HUD PREVIEWS IN STYLE CARDS
+   -------------------------------------------------------------------------- */
+.mini-preview {
+    display: flex; align-items: center; gap: 4px;
+    padding: 3px 6px; border-radius: 8px; background: rgba(0,0,0,0.25);
+}
+
+.c-red-t { color: #ef4444 !important; }
+.c-blue-t { color: #3b82f6 !important; }
+.c-amber-t { color: #f59e0b !important; }
+.c-cyan-t { color: #06b6d4 !important; }
+
+.c-red-bg { background: #ef4444 !important; }
+.c-blue-bg { background: #3b82f6 !important; }
+.c-amber-bg { background: #f59e0b !important; }
+
+.c-red-b { border-color: #ef4444 !important; }
+.c-blue-b { border-color: #3b82f6 !important; }
+.c-amber-b { border-color: #f59e0b !important; }
+
+.mini-circle {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex; justify-content: center; align-items: center;
+    font-size: 0.65rem; background: rgba(15,23,42,0.8);
+}
+
+.mini-bar-row { display: flex; align-items: center; gap: 4px; font-size: 0.65rem; }
+.mini-bar-fill { height: 4px; border-radius: 2px; }
+
+.mini-pill {
+    padding: 2px 6px; border-radius: 10px; font-size: 0.65rem;
+    border: 1px solid rgba(255,255,255,0.2); background: rgba(15,23,42,0.8);
+    display: flex; align-items: center; gap: 3px;
+}
+
+.mini-sq {
+    width: 18px; height: 18px; border-radius: 4px; font-size: 0.65rem;
+    border: 1px solid rgba(255,255,255,0.2); background: rgba(15,23,42,0.8);
+    display: flex; justify-content: center; align-items: center;
+}
+
+.mini-blocks { display: flex; gap: 2px; }
+.b-act { width: 6px; height: 6px; border-radius: 1px; }
+.b-inact { width: 6px; height: 6px; border-radius: 1px; background: rgba(255,255,255,0.15); }
+
+.mini-diamond {
+    width: 16px; height: 16px; transform: rotate(45deg);
+    border: 1px solid rgba(255,255,255,0.3); background: rgba(15,23,42,0.8);
+    display: flex; justify-content: center; align-items: center; font-size: 0.55rem;
+}
+.mini-diamond i { transform: rotate(-45deg); }
+
+.mini-hex {
+    width: 18px; height: 18px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: rgba(15,23,42,0.9); border: 1px solid rgba(255,255,255,0.3);
+    display: flex; justify-content: center; align-items: center; font-size: 0.6rem;
+}
+
+.mini-cyber {
+    padding: 2px 6px; clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+    background: rgba(2,6,23,0.9); font-size: 0.65rem; font-weight: 700; color: #fff;
+    display: flex; align-items: center; gap: 4px;
+}
+
+.mini-card-badge {
+    padding: 3px 6px; border-radius: 6px; background: rgba(255,255,255,0.1);
+    font-size: 0.65rem; border: 1px solid rgba(255,255,255,0.2);
+}
+
+.mini-arc {
+    width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
+    display: flex; justify-content: center; align-items: center; font-size: 0.65rem;
+}
+
+.mini-retro { font-family: 'Fira Code', monospace; font-size: 0.6rem; color: #fff; }
+
+.mini-wave {
+    width: 20px; height: 20px; border-radius: 6px;
+    display: flex; justify-content: center; align-items: center; font-size: 0.65rem; color: #fff;
+}
+
+.mini-line-item { font-size: 0.7rem; }
+
+.mini-tacho {
+    width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3);
+    display: flex; justify-content: center; align-items: center; font-size: 0.65rem;
+}
+
+.mini-thick-pill {
+    padding: 2px 8px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.3); font-size: 0.65rem;
+}
+
+.mini-dual-ring {
+    width: 20px; height: 20px; border-radius: 50%; border: 2px double rgba(255,255,255,0.4);
+    display: flex; justify-content: center; align-items: center; font-size: 0.65rem;
+}
+
+.mini-badge-card {
+    padding: 3px 6px; border-radius: 4px; border-left: 2px solid #ef4444; background: rgba(15,23,42,0.8); font-size: 0.65rem;
+}
+
+.mini-cinematic {
+    padding: 3px 8px; border-radius: 14px; background: rgba(2,6,23,0.8); display: flex; gap: 4px; font-size: 0.65rem;
+}
+
+.mini-micro { font-size: 0.75rem; }
+
+.mini-grid-box {
+    padding: 3px 4px; border-radius: 4px; background: rgba(15,23,42,0.8); font-size: 0.65rem;
+}
+
+.mini-speedo-prev {
+    display: flex; align-items: center; justify-content: center;
+    padding: 4px 10px; border-radius: 10px; background: rgba(15,23,42,0.8);
+    font-size: 0.75rem; font-weight: 800; color: #fff; min-width: 60px; height: 32px;
+}
+
+.mini-speedo-prev .m-sp { font-family: 'Orbitron', sans-serif; font-size: 0.82rem; color: #ffffff; letter-spacing: -0.5px; }
+.mini-speedo-prev .m-sp-lg { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+.mini-speedo-prev .m-un { font-size: 0.55rem; color: rgba(255,255,255,0.5); margin-left: 3px; font-weight: 700; }
+.c-pink-t { color: #ec4899 !important; }
+
+/* 15 Speedo Mini Preview Variations */
+.prev-arc {
+    border-radius: 14px 14px 6px 6px; border-top: 2px solid #3b82f6; background: rgba(30, 58, 138, 0.3);
+}
+
+.prev-dual {
+    display: flex; gap: 4px; padding: 2px 4px;
+}
+.m-dial-mini {
+    padding: 2px 4px; border-radius: 50%; font-size: 0.55rem; font-weight: 800;
+    border: 1px solid rgba(255,255,255,0.3); background: rgba(15,23,42,0.9);
+}
+
+.prev-num {
+    background: transparent; border: none; padding: 0;
+}
+
+.prev-cyber {
+    clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 6px 100%);
+    background: rgba(2, 6, 23, 0.9); border-bottom: 2px solid #06b6d4;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.m-cyber-bar { width: 80%; height: 2px; background: #06b6d4; margin-top: 1px; }
+
+.prev-ring {
+    background: transparent; padding: 0;
+}
+.m-ring-circle {
+    width: 32px; height: 32px; border-radius: 50%; border: 2px solid #a855f7;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    display: flex; justify-content: center; align-items: center; background: rgba(15,23,42,0.8);
+}
+.m-ring-circle .m-sp { font-size: 0.72rem; }
+
+.prev-led {
+    background: rgba(0,0,0,0.9); border: 1px solid #222; font-family: 'Fira Code', monospace;
+}
+.m-led-txt { font-family: 'Fira Code', monospace; color: #22c55e; font-size: 0.72rem; font-weight: 700; }
+
+.prev-holo {
+    background: rgba(6, 182, 212, 0.12); border: 1px solid rgba(6, 182, 212, 0.4);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+.prev-needle {
+    background: rgba(15,23,42,0.8); border-top: 2px solid #ef4444; border-radius: 12px 12px 4px 4px;
+    position: relative; overflow: hidden;
+}
+.m-needle-line {
+    position: absolute; top: 3px; left: 50%; transform: translateX(-50%) rotate(25deg);
+    width: 2px; height: 8px; background: #ef4444; border-radius: 1px;
+}
+
+.prev-hex {
+    background: transparent; padding: 0;
+}
+.m-hex-container {
+    width: 42px; height: 30px;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    background: rgba(15, 23, 42, 0.9); border: 1px solid #f59e0b;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.prev-glass {
+    background: transparent; padding: 0;
+}
+.m-glass-pill {
+    padding: 3px 10px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.08); display: flex; align-items: center; gap: 4px;
+}
+
+.prev-wings {
+    border-left: 2px solid #f59e0b; border-right: 2px solid #3b82f6;
+    background: rgba(15,23,42,0.85); border-radius: 6px;
+}
+
+.prev-compact {
+    display: flex; align-items: center; gap: 4px; padding: 3px 8px;
+}
+.m-gear {
+    background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;
+    font-size: 0.55rem; font-weight: 900; padding: 1px 4px; border-radius: 4px;
+}
+
+.prev-oled {
+    border-top: 2px solid #ffffff; background: rgba(2,6,23,0.9); border-radius: 4px;
+}
+
+.prev-diamond {
+    background: transparent; padding: 0;
+}
+.m-pink-diamond {
+    padding: 3px 8px; border-radius: 6px; border: 1px solid #ec4899;
+    background: rgba(2, 6, 23, 0.9); transform: rotate(-2deg);
+    box-shadow: 0 0 8px rgba(236, 72, 153, 0.3);
+}
+
+.prev-linear {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+}
+.m-seg-ticks { display: flex; gap: 2px; width: 100%; justify-content: center; }
+.m-seg-ticks .t-act { width: 5px; height: 3px; background: #3b82f6; border-radius: 1px; }
+.m-seg-ticks .t-inact { width: 5px; height: 3px; background: rgba(255,255,255,0.2); border-radius: 1px; }
+.mini-speedo-prev .m-dial { font-size: 0.65rem; padding: 2px 4px; border-radius: 50%; border: 1px solid #3b82f6; }
+.mini-speedo-prev .m-led-txt { font-family: 'Fira Code', monospace; color: #22c55e; font-size: 0.7rem; }
+.mini-speedo-prev .m-gear { background: #3b82f6; color: #fff; padding: 1px 4px; border-radius: 3px; font-size: 0.6rem; margin-right: 4px; }
+
+

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaterPVP Advanced HUD v3</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;600;700;800;900&family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome 6 Pro/Free icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HUD MAIN WRAPPER -->
+    <div id="hud-wrapper">
+        
+        <!-- STATUS BARS CONTAINER -->
+        <div id="status-hud-container" class="hud-component style-1" data-style="1">
+            <!-- Dynamic Status Items (Health, Armor, Hunger, Thirst, Stamina, Voice) -->
+            <div id="status-items-wrapper"></div>
+        </div>
+
+        <!-- SPEEDOMETER CONTAINER -->
+        <div id="speedo-hud-container" class="hud-component speedo-style-1 hidden" data-speedo-style="1">
+            <!-- Dynamic Speedometer Structure -->
+            <div id="speedo-items-wrapper"></div>
+        </div>
+
+        <!-- STREET / LOCATION CONTAINER -->
+        <div id="street-hud-container" class="hud-component hidden">
+            <div class="location-box">
+                <i class="fa-solid fa-location-dot location-icon"></i>
+                <div class="location-text">
+                    <span id="street-name">Legion Square</span>
+                    <span id="zone-name">Downtown Los Santos</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- GLASSMORPHISM EDITOR MODAL (/hud) -->
+    <div id="editor-modal" class="hidden">
+        <div class="glass-container">
+            
+            <!-- Modal Header -->
+            <div class="editor-header">
+                <div class="editor-title">
+                    <div class="logo-icon"><i class="fa-solid fa-sliders"></i></div>
+                    <div>
+                        <h2>VATER ADVANCED HUD</h2>
+                        <span class="sub-title">QB-CORE & QBX MULTI-STYLE CUSTOMIZER</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="btn-drag-mode" class="glass-btn btn-secondary">
+                        <i class="fa-solid fa-up-down-left-right"></i> Sürükle & Bırak
+                    </button>
+                    <button id="btn-reset-hud" class="glass-btn btn-danger">
+                        <i class="fa-solid fa-rotate-left"></i> Sıfırla
+                    </button>
+                    <button id="btn-close-editor" class="glass-btn btn-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content Layout -->
+            <div class="editor-body">
+                
+                <!-- Sidebar Tabs -->
+                <div class="editor-sidebar">
+                    <button class="nav-tab active" data-tab="status-styles">
+                        <i class="fa-solid fa-heart-pulse"></i> Status Stilleri (20)
+                    </button>
+                    <button class="nav-tab" data-tab="speedo-styles">
+                        <i class="fa-solid fa-gauge-high"></i> Speedometer (15)
+                    </button>
+                    <button class="nav-tab" data-tab="color-themes">
+                        <i class="fa-solid fa-palette"></i> Renk & Tema Paleti
+                    </button>
+                    <button class="nav-tab" data-tab="layout-scale">
+                        <i class="fa-solid fa-maximize"></i> Boyut & Şeffaflık
+                    </button>
+                    <button class="nav-tab" data-tab="element-toggles">
+                        <i class="fa-solid fa-eye"></i> Barları Aç / Kapat
+                    </button>
+                </div>
+
+                <!-- Tab Content Panels -->
+                <div class="editor-content">
+                    
+                    <!-- TAB 1: 20 STATUS BAR STYLES -->
+                    <div class="tab-panel active" id="tab-status-styles">
+                        <div class="panel-header">
+                            <h3>20 Farklı Can & Statü Görünümü</h3>
+                            <p>Dilediğiniz görünüm üzerine tıklayarak canlı olarak uygulayın.</p>
+                        </div>
+                        <div class="style-grid" id="status-style-grid">
+                            <!-- 20 Presets injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: 15 SPEEDOMETER STYLES -->
+                    <div class="tab-panel" id="tab-speedo-styles">
+                        <div class="panel-header">
+                            <h3>15 Farklı Hız Göstergesi Görünümü</h3>
+                            <p>Araç kullanımında görüntülenecek gösterge stilini seçin.</p>
+                        </div>
+                        <div class="style-grid" id="speedo-style-grid">
+                            <!-- 15 Presets injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: COLOR THEMES -->
+                    <div class="tab-panel" id="tab-color-themes">
+                        <div class="panel-header">
+                            <h3>Tema & Renk Özelleştirme</h3>
+                            <p>Hazır renk paletlerinden birini seçin veya özel renk belirleyin.</p>
+                        </div>
+                        <div class="theme-grid">
+                            <div class="theme-card active" data-theme="glass">
+                                <div class="theme-preview glass-bg-preview"></div>
+                                <span>Glassmorphism White</span>
+                            </div>
+                            <div class="theme-card" data-theme="cyberpunk">
+                                <div class="theme-preview cyber-bg"></div>
+                                <span>Cyberpunk Neon</span>
+                            </div>
+                            <div class="theme-card" data-theme="gold">
+                                <div class="theme-preview gold-bg"></div>
+                                <span>Gold Luxury</span>
+                            </div>
+                            <div class="theme-card" data-theme="emerald">
+                                <div class="theme-preview emerald-bg"></div>
+                                <span>Emerald Mint</span>
+                            </div>
+                            <div class="theme-card" data-theme="sunset">
+                                <div class="theme-preview sunset-bg"></div>
+                                <span>Sunset Orange</span>
+                            </div>
+                            <div class="theme-card" data-theme="purple">
+                                <div class="theme-preview purple-bg"></div>
+                                <span>Midnight Purple</span>
+                            </div>
+                            <div class="theme-card" data-theme="crimson">
+                                <div class="theme-preview crimson-bg"></div>
+                                <span>Crimson Red</span>
+                            </div>
+                            <div class="theme-card" data-theme="oled">
+                                <div class="theme-preview oled-bg"></div>
+                                <span>OLED Dark Minimal</span>
+                            </div>
+                        </div>
+
+                        <div class="custom-color-picker">
+                            <div class="picker-row">
+                                <label><i class="fa-solid fa-heart" style="color:#ef4444"></i> Can Rengi:</label>
+                                <input type="color" id="color-health" value="#ef4444">
+                            </div>
+                            <div class="picker-row">
+                                <label><i class="fa-solid fa-shield-halved" style="color:#3b82f6"></i> Zırh Rengi:</label>
+                                <input type="color" id="color-armor" value="#3b82f6">
+                            </div>
+                            <div class="picker-row">
+                                <label><i class="fa-solid fa-utensils" style="color:#f59e0b"></i> Yemek Rengi:</label>
+                                <input type="color" id="color-hunger" value="#f59e0b">
+                            </div>
+                            <div class="picker-row">
+                                <label><i class="fa-solid fa-droplet" style="color:#06b6d4"></i> Su Rengi:</label>
+                                <input type="color" id="color-thirst" value="#06b6d4">
+                            </div>
+                            <div class="picker-row">
+                                <label><i class="fa-solid fa-bolt" style="color:#10b981"></i> Enerji Rengi:</label>
+                                <input type="color" id="color-stamina" value="#10b981">
+                            </div>
+                            <div class="picker-row">
+                                <label><i class="fa-solid fa-microphone" style="color:#a855f7"></i> Mikrofon Rengi:</label>
+                                <input type="color" id="color-voice" value="#a855f7">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: LAYOUT, SCALE & OPACITY -->
+                    <div class="tab-panel" id="tab-layout-scale">
+                        <div class="panel-header">
+                            <h3>Boyut & Şeffaflık Ayarları</h3>
+                            <p>HUD bileşenlerinin ölçeğini ve opaklığını ayarlayın.</p>
+                        </div>
+                        <div class="setting-controls">
+                            <div class="control-group">
+                                <div class="control-label">
+                                    <span>HUD Ölçeği (Scale)</span>
+                                    <span id="val-scale">1.0x</span>
+                                </div>
+                                <input type="range" id="input-scale" min="0.6" max="1.5" step="0.05" value="1.0">
+                            </div>
+                            <div class="control-group">
+                                <div class="control-label">
+                                    <span>HUD Şeffaflığı (Opacity)</span>
+                                    <span id="val-opacity">100%</span>
+                                </div>
+                                <input type="range" id="input-opacity" min="0.2" max="1.0" step="0.05" value="1.0">
+                            </div>
+                            <div class="control-group">
+                                <div class="control-label">
+                                    <span>Hız Birimi</span>
+                                </div>
+                                <div class="unit-toggle">
+                                    <button class="unit-btn active" data-unit="kmh">KM/H</button>
+                                    <button class="unit-btn" data-unit="mph">MPH</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: ELEMENT TOGGLES -->
+                    <div class="tab-panel" id="tab-element-toggles">
+                        <div class="panel-header">
+                            <h3>Bileşen Görünürlüğü</h3>
+                            <p>Ekranınızda görünmesini istediğiniz ögeleri açıp kapatın.</p>
+                        </div>
+                        <div class="toggle-list">
+                            <label class="toggle-item">
+                                <span><i class="fa-solid fa-heart" style="color:#ef4444"></i> Can Barı</span>
+                                <input type="checkbox" id="toggle-health" checked>
+                                <span class="slider-switch"></span>
+                            </label>
+                            <label class="toggle-item">
+                                <span><i class="fa-solid fa-shield-halved" style="color:#3b82f6"></i> Zırh Barı</span>
+                                <input type="checkbox" id="toggle-armor" checked>
+                                <span class="slider-switch"></span>
+                            </label>
+                            <label class="toggle-item">
+                                <span><i class="fa-solid fa-utensils" style="color:#f59e0b"></i> Yemek Barı</span>
+                                <input type="checkbox" id="toggle-hunger" checked>
+                                <span class="slider-switch"></span>
+                            </label>
+                            <label class="toggle-item">
+                                <span><i class="fa-solid fa-droplet" style="color:#06b6d4"></i> Su Barı</span>
+                                <input type="checkbox" id="toggle-thirst" checked>
+                                <span class="slider-switch"></span>
+                            </label>
+                            <label class="toggle-item">
+                                <span><i class="fa-solid fa-bolt" style="color:#10b981"></i> Enerji Barı</span>
+                                <input type="checkbox" id="toggle-stamina" checked>
+                                <span class="slider-switch"></span>
+                            </label>
+                            <label class="toggle-item">
+                                <span><i class="fa-solid fa-microphone" style="color:#a855f7"></i> Mikrofon Barı</span>
+                                <input type="checkbox" id="toggle-voice" checked>
+                                <span class="slider-switch"></span>
+                            </label>
+                            <label class="toggle-item">
+                                <span><i class="fa-solid fa-location-dot" style="color:#ec4899"></i> Sokak & Konum Bilgisi</span>
+                                <input type="checkbox" id="toggle-street" checked>
+                                <span class="slider-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="editor-footer">
+                <span><i class="fa-solid fa-circle-info"></i> Ayarlar otomatik kaydedilir. Ekranı kapatmak için ESC veya [X] tuşuna basın.</span>
+                <button id="btn-save-close" class="glass-btn btn-primary">
+                    <i class="fa-solid fa-check"></i> Kaydet ve Kapat
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- DRAG EDIT OVERLAY NOTICE -->
+    <div id="drag-overlay" class="hidden">
+        <div class="drag-banner">
+            <i class="fa-solid fa-hand-pointer"></i> SÜRÜKLE VE BIRAK MODU AKTİF
+            <span>Elementleri farenizle istediğiniz konuma taşıyabilirsiniz. Bitirmek için ESC tuşuna basın.</span>
+            <button id="btn-exit-drag" class="glass-btn btn-primary">Bitti</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
