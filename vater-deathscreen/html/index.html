@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WraithPVP - Ölüm Ekranı</title>
+    <!-- Google Fonts: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="death-screen" class="death-screen-container hidden">
+        <div class="hud-card glass-panel">
+            <div class="killer-section">
+                <div class="avatar-container">
+                    <img id="killer-avatar" src="" alt="Avatar" onerror="this.style.opacity='0'" onload="this.style.opacity='1'">
+                    <div class="avatar-fallback">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="killer-info">
+                    <span id="killer-text"><span class="highlight-red">ÖLDÜNÜZ</span></span>
+                </div>
+            </div>
+            
+            <div class="status-section">
+                <div id="countdown-wrapper" class="status-text">
+                    DOĞMANA <span id="countdown-timer" class="highlight-gold">30</span> SANİYE KALDI
+                </div>
+                <div id="respawn-prompt" class="status-text hidden">
+                    DOĞMAK İÇİN <span class="key-cap">E</span> TUŞUNA BASILI TUTUN
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-bar-bg">
+                    <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
