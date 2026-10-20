@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Holografik Olay Yeri Rekonstrüksiyonu</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Floating Focus Mode Switcher Badge (Right Edge) -->
+    <button id="btn-toggle-focus-mode" class="glass-mode-toggle hidden">
+        <span class="status-indicator"></span>
+        <span id="mode-toggle-text">ARAYÜZ KONTROLÜ</span>
+        <span class="key-hint">ALT</span>
+    </button>
+
+    <!-- Detective Incident Scanner Modal -->
+    <div id="scanner-modal" class="glass-container hidden">
+        <div class="modal-header">
+            <div class="header-left">
+                <div class="header-icon">
+                    <i class="fa-solid fa-radar"></i>
+                </div>
+                <div class="header-text">
+                    <h2>DEDEKTİF OLAY YERİ TARAYICISI</h2>
+                    <span class="header-sub">35 METRE ÇEVRESEL TARAMA BÖLGESİ</span>
+                </div>
+            </div>
+            <button class="btn-close" id="btn-close-scanner" title="Kapat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="incident-list-container">
+            <div class="incident-list" id="incident-list">
+                <!-- Dynamic Incident Cards -->
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-scan-current" id="btn-start-area-scan">
+                <i class="fa-solid fa-crosshairs"></i>
+                <span>MEVCUT ALANI TARA (KANIT İNCELEMESİ)</span>
+            </button>
+            <button class="btn-primary" id="btn-save-manual-prompt">
+                <i class="fa-solid fa-bookmark"></i>
+                <span>MEVCUT ALAN HAFIZASINI KAYDET</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Save Name Prompt Modal -->
+    <div id="name-modal" class="glass-container prompt-modal hidden">
+        <div class="modal-header">
+            <div class="header-left">
+                <div class="header-icon">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+                <div class="header-text">
+                    <h2>OLAY YERİ KAYDI</h2>
+                    <span class="header-sub">KAYIT BAŞLIĞI VE TANIMLAMA</span>
+                </div>
+            </div>
+            <button class="btn-close" id="btn-close-name" title="Kapat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="prompt-body">
+            <label for="incident-name-input">KAYIT BAŞLIĞI GİRİNİZ</label>
+            <div class="input-wrapper">
+                <input type="text" id="incident-name-input" placeholder="Örn: Legion Meydanı Çatışması #1" maxlength="60" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="modal-footer prompt-footer">
+            <button class="btn-secondary" id="btn-cancel-name">İPTAL</button>
+            <button class="btn-primary" id="btn-confirm-save">
+                <i class="fa-solid fa-check"></i> KAYDET
+            </button>
+        </div>
+    </div>
+
+    <!-- Playback Control Overlay HUD (Bottom Fixed) -->
+    <div id="playback-overlay" class="glass-hud hidden">
+        <div class="hud-header">
+            <div class="hud-incident-info">
+                <span class="hud-serial" id="badge-serial-id">SN-2026-889123</span>
+                <span class="hud-divider">|</span>
+                <span class="hud-title" id="badge-incident-name">Legion Meydanı Çatışması</span>
+            </div>
+            <div class="hud-meta-tags">
+                <span class="tag-badge" id="meta-type"><i class="fa-solid fa-bolt"></i> OLUMCUL_YARALANMA</span>
+                <span class="tag-badge" id="meta-time"><i class="fa-solid fa-clock"></i> 2026-08-13 13:50</span>
+            </div>
+            <button class="btn-exit" id="btn-exit-playback">
+                <i class="fa-solid fa-power-off"></i> CANLANDIRMAYI BİTİR
+            </button>
+        </div>
+
+        <div class="hud-timeline">
+            <span class="time-label" id="current-time">00:00</span>
+            <div class="slider-container">
+                <input type="range" id="timeline-slider" min="1" max="100" value="1" step="1">
+            </div>
+            <span class="time-label" id="total-time">02:00</span>
+        </div>
+
+        <div class="hud-controls">
+            <div class="controls-left">
+                <button class="btn-play-pause" id="btn-play-pause" title="Oynat / Durdur">
+                    <i class="fa-solid fa-pause"></i>
+                </button>
+                <div class="speed-selector">
+                    <button class="btn-speed" data-speed="0.5">0.5x</button>
+                    <button class="btn-speed active" data-speed="1.0">1.0x</button>
+                    <button class="btn-speed" data-speed="2.0">2.0x</button>
+                    <button class="btn-speed" data-speed="4.0">4.0x</button>
+                </div>
+            </div>
+
+            <div class="controls-right">
+                <button class="btn-filter active" id="filter-peds" data-filter="peds">
+                    <i class="fa-solid fa-user"></i> YAYALAR
+                </button>
+                <button class="btn-filter active" id="filter-vehicles" data-filter="vehicles">
+                    <i class="fa-solid fa-car"></i> ARAÇLAR
+                </button>
+                <button class="btn-filter active" id="filter-events" data-filter="events">
+                    <i class="fa-solid fa-location-dot"></i> OLAYLAR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
