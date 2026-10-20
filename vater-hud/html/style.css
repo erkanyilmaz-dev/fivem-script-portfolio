@@ -1,0 +1,650 @@
+/* ═══════════════════════════════════════════════════════════════
+   VaterPVP HUD — style.css
+   Modern, glassmorphic (no backdrop blur for CEF compatibility), 
+   highly animated, premium design.
+   Supports Gold/Amber and Neon themes.
+ ═══════════════════════════════════════════════════════════════ */
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Color System */
+  --gold-primary:   #d4a843;
+  --gold-bright:    #f5c242;
+  --gold-glow:      rgba(212, 168, 67, 0.3);
+  
+  --panel-bg:       rgba(10, 10, 15, 0.85);
+  --panel-border:   rgba(212, 168, 67, 0.25);
+  --glass-border:   rgba(255, 255, 255, 0.06);
+  --panel-shadow:   rgba(0, 0, 0, 0.6);
+
+  --health-start:   #02f37c;
+  --health-end:     #02bbbb;
+  --armor-start:    #0099ff;
+  --armor-end:      #8200ff;
+
+  --text-main:      #ffffff;
+  --text-sub:       rgba(255, 255, 255, 0.75);
+  --text-dim:       rgba(255, 255, 255, 0.45);
+  
+  /* Typography */
+  --font-main:      'Outfit', 'Exo 2', 'Rajdhani', sans-serif;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent !important;
+  background-color: transparent !important;
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  pointer-events: none; /* Let clicks pass through default transparent areas */
+}
+
+/* Make sure active HUD elements are clickable, and everything else is not */
+.hud-card, #preview-test-panel, #open-panel-btn {
+  pointer-events: auto;
+}
+
+/* ── HUD Card Template ── */
+.hud-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  box-shadow: 
+    0 10px 30px var(--panel-shadow),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 0 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.hud-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 5%; right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--gold-primary) 30%, 
+    var(--gold-bright) 50%, 
+    var(--gold-primary) 70%, 
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+/* ═══════════════════════════════════════════
+   1. PVP RANK CARD (SOL ÜST)
+   ═══════════════════════════════════════════ */
+#rank-card {
+  display: none !important; /* PVP Seviye ve XP kartı gizlendi */
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 220px;
+  padding: 12px 16px;
+  flex-direction: column;
+  gap: 8px;
+  animation: cardSlideInLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.rank-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rank-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--gold-bright);
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 8px var(--gold-glow);
+}
+
+.rank-level {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  background: rgba(212, 168, 67, 0.15);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.xp-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+#xp-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--gold-primary), var(--gold-bright));
+  box-shadow: 0 0 8px var(--gold-glow);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.xp-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+}
+
+.xp-label {
+  color: var(--text-dim);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.xp-value {
+  color: var(--text-sub);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════
+   2. SAĞ ÜST KÖŞE: SAAT, LOGO, ISTATISTIKLER
+   ═══════════════════════════════════════════ */
+#hud-wrapper {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  animation: cardSlideInRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+#hud-panel {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  min-width: 380px;
+}
+
+.hud-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Sol Blok: Saat / Tarih */
+.hud-left {
+  flex: 0 0 auto;
+  gap: 6px;
+  padding-right: 14px;
+  border-right: 1px solid rgba(212, 168, 67, 0.2);
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--gold-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.info-value {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 0.02em;
+}
+
+/* Orta Blok: Logo */
+.hud-center {
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 16px;
+  border-right: 1px solid rgba(212, 168, 67, 0.2);
+}
+
+.logo-wrapper {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+  animation: logoPulse 3s ease-in-out infinite;
+}
+
+#server-logo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  z-index: 2;
+  filter: drop-shadow(0 0 6px rgba(212, 168, 67, 0.4));
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#server-logo:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(245, 194, 66, 0.7));
+}
+
+/* Sağ Blok: Stats & Server Info */
+.hud-right {
+  flex: 1;
+  padding-left: 14px;
+  gap: 4px;
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 32px;
+}
+
+.stat-label {
+  font-size: 7.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--gold-bright);
+  line-height: 1.1;
+  text-shadow: 0 0 10px var(--gold-glow);
+  transition: all 0.25s ease;
+}
+
+.stat-value.updated {
+  color: #ffffff;
+  text-shadow: 0 0 18px #ffffff;
+  transform: scale(1.15);
+}
+
+.stat-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(212, 168, 67, 0.2);
+}
+
+#streak-container {
+  display: none; /* Default hidden, JS will show when streak > 0 */
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.server-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2px;
+  width: 100%;
+}
+
+.server-name {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--gold-bright);
+  letter-spacing: 0.1em;
+}
+
+.server-discord {
+  font-size: 8.5px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════
+   3. STATUS BARS (CAN & ZIRH) (ALT ORTA)
+   ═══════════════════════════════════════════ */
+#status-card {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: cardSlideInBottom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-icon {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.health-icon {
+  color: var(--health-start);
+  filter: drop-shadow(0 0 4px rgba(2, 243, 124, 0.4));
+}
+
+.armor-icon {
+  color: var(--armor-start);
+  filter: drop-shadow(0 0 4px rgba(0, 153, 255, 0.4));
+}
+
+.status-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.bar-container {
+  flex: 1;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+  position: relative;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  position: relative;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#health-bar-fill {
+  background: linear-gradient(90deg, var(--health-start), var(--health-end));
+}
+
+#armor-bar-fill {
+  background: linear-gradient(90deg, var(--armor-start), var(--armor-end));
+}
+
+.bar-glow {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.15) 50%, 
+    transparent 100%
+  );
+  animation: shine 2.5s infinite linear;
+}
+
+.status-value {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-main);
+  min-width: 24px;
+  text-align: right;
+}
+
+/* Wobble / Shake Alert on critical health (< 25%) */
+.critical-alert {
+  animation: criticalPulse 1s infinite alternate, criticalWobble 0.3s infinite;
+  border-color: rgba(255, 50, 50, 0.7) !important;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(255, 50, 50, 0.35) !important;
+}
+
+/* ═══════════════════════════════════════════
+   4. BİLDİRİM FEEDİ (SAĞ ORTA)
+   ═══════════════════════════════════════════ */
+#notification-feed {
+  position: fixed;
+  top: 130px;
+  right: 20px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+  z-index: 99;
+}
+
+.hud-notification {
+  background: rgba(12, 10, 10, 0.88);
+  border: 1px solid rgba(255, 50, 50, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-shadow: 
+    0 6px 15px rgba(0, 0, 0, 0.4),
+    0 0 10px rgba(255, 50, 50, 0.1) inset;
+  position: relative;
+  overflow: hidden;
+  animation: notifSlideIn 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) both;
+}
+
+.hud-notification.kill-event {
+  border-color: rgba(0, 219, 222, 0.3);
+  box-shadow: 
+    0 6px 15px rgba(0, 0, 0, 0.4),
+    0 0 10px rgba(0, 219, 222, 0.1) inset;
+}
+
+.hud-notification.kill-event::before {
+  background: linear-gradient(180deg, #00dbde, #fc00ff);
+}
+
+.hud-notification::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #ff3333, #a80000);
+}
+
+.notif-text {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #fff2f2;
+  letter-spacing: 0.02em;
+}
+
+.hud-notification.fade-out {
+  animation: notifSlideOut 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+/* ═══════════════════════════════════════════
+   5. HUD TEST / DEV PANEL (SOL ALT)
+   ═══════════════════════════════════════════ */
+#preview-test-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 180px;
+  background: rgba(10, 12, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  padding: 10px;
+  display: none; /* JS toggled */
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 6px;
+}
+
+.panel-header span {
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+#toggle-panel-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+#toggle-panel-btn:hover {
+  color: #ffffff;
+}
+
+.panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.test-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-main);
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.test-btn:hover {
+  background: var(--gold-primary);
+  color: #000000;
+  border-color: var(--gold-bright);
+  font-weight: 700;
+}
+
+#open-panel-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 28px;
+  height: 28px;
+  background: rgba(10, 10, 15, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none; /* JS will show in browser preview only */
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease;
+}
+
+#open-panel-btn:hover {
+  transform: scale(1.1);
+  border-color: var(--gold-bright);
+}
+
+/* ═══════════════════════════════════════════
+   KEYFRAMES / ANIMATIONS
+   ═══════════════════════════════════════════ */
+@keyframes cardSlideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes cardSlideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes cardSlideInBottom {
+  from { opacity: 0; transform: translate(-50%, 30px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes logoPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.05); }
+}
+
+@keyframes shine {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes notifSlideIn {
+  from { opacity: 0; transform: translateX(50px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes notifSlideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(80px); }
+}
+
+@keyframes levelUpFlash {
+  0%   { background: var(--panel-bg); border-color: var(--panel-border); }
+  50%  { background: rgba(245, 194, 66, 0.35); border-color: var(--gold-bright); box-shadow: 0 0 25px rgba(245, 194, 66, 0.6); }
+  100% { background: var(--panel-bg); border-color: var(--panel-border); }
+}
+
+.level-up-animate {
+  animation: levelUpFlash 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) both;
+}
+
+@keyframes criticalPulse {
+  0%   { border-color: rgba(255, 50, 50, 0.4); }
+  100% { border-color: rgba(255, 50, 50, 0.9); }
+}
+
+@keyframes criticalWobble {
+  0%, 100% { transform: translate(-50%, 0); }
+  25%      { transform: translate(-50.5%, -0.5px); }
+  75%      { transform: translate(-49.5%, 0.5px); }
+}
