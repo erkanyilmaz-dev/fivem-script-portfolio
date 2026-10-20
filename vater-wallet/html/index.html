@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bifold Leather Wallet</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=OCR+A+Extended&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="wallet-app" class="wallet-container hidden">
+        <!-- Arka Plan Karartma (Backdrop Blur) -->
+        <div class="wallet-backdrop" id="wallet-backdrop"></div>
+
+        <!-- CÜZDAN ANA GÖVDE -->
+        <div class="wallet-wrapper">
+            
+            <!-- CÜZDAN ÜST NAKİT PARA BÖLMESİ (CEPTEN ÇIKAN 100 DOLARLIK BANKNOTLAR) -->
+            <div class="top-cash-slot">
+                <div class="dollar-bills-container">
+                    <div class="dollar-bill bill-1"></div>
+                    <div class="dollar-bill bill-2"></div>
+                    <div class="dollar-bill bill-3"></div>
+                </div>
+
+                <!-- Bakiye Bilgisi HUD Tabı -->
+                <div class="cash-hud-badge">
+                    <div class="hud-item cash-item">
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                        <div class="hud-info">
+                            <span class="label">ÜSTÜNDEKİ NAKİT</span>
+                            <span class="amount" id="cash-amount">$0</span>
+                        </div>
+                    </div>
+                    <div class="hud-divider"></div>
+                    <div class="hud-item bank-item">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <div class="hud-info">
+                            <span class="label">BANKA BAKİYESİ</span>
+                            <span class="amount" id="bank-amount">$0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DERİ CÜZDAN KATLANIR GÖVDE (BIFOLD LEATHER WALLET) -->
+            <div class="bifold-wallet">
+                
+                <!-- KANAT 1: SOL TARAF (SAN ANDREAS STATE ID KARTI - 2. GÖRSELİ BİREBİR) -->
+                <div class="wallet-wing left-wing">
+                    <div class="leather-texture"></div>
+                    <div class="leather-stitching"></div>
+                    <div class="wing-content">
+                        
+                        <!-- Cüzdan Marka Logosu -->
+                        <div class="wallet-brand">
+                            <i class="fa-solid fa-crown"></i>
+                            <span>VATER LEATHER</span>
+                        </div>
+
+                        <!-- SOL KANAT ORTASINDA BİREBİR SAN ANDREAS KİMLİK KARTI -->
+                        <div class="left-id-card-wrapper">
+                            <div class="san-andreas-id-card-display">
+                                <div class="id-card-top">
+                                    <span class="id-card-title">SAN ANDREAS STATE ID</span>
+                                    <span class="id-card-country">USA</span>
+                                </div>
+                                <div class="id-card-divider"></div>
+                                <div class="id-card-body">
+                                    <div class="id-photo-container">
+                                        <img id="player-avatar" alt="Kimlik Vesikalık" onerror="handleAvatarError(this)">
+                                    </div>
+                                    <div class="id-details">
+                                        <div class="id-field">
+                                            <span class="id-label">İSİM SOYİSİM:</span>
+                                            <span class="id-value" id="player-fullname">Vater Scripts</span>
+                                        </div>
+                                        <div class="id-field">
+                                            <span class="id-label">KİMLİK NO:</span>
+                                            <span class="id-value highlight" id="player-citizenid">CGQ39290</span>
+                                        </div>
+                                        <div class="id-field">
+                                            <span class="id-label">DOĞUM TARİHİ:</span>
+                                            <span class="id-value" id="player-dob">1999-11-11</span>
+                                        </div>
+                                        <div class="id-field">
+                                            <span class="id-label">CİNSİYET:</span>
+                                            <span class="id-value" id="player-gender">Erkek</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="id-card-footer">
+                                    <span class="id-footer-left">VERİLİŞ: STATE OF SA</span>
+                                    <span class="id-footer-right" id="id-card-serial">ID-CGQ39290-2026</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- CÜZDAN KATLAMA ÇİZGİSİ / DERİ OMURGA -->
+                <div class="wallet-spine">
+                    <div class="spine-crease"></div>
+                </div>
+
+                <!-- KANAT 2: SAĞ TARAF (KART CEPLERİ - GARBALIA STYLE) -->
+                <div class="wallet-wing right-wing">
+                    <div class="leather-texture"></div>
+                    <div class="leather-stitching"></div>
+                    
+                    <div class="wing-header">
+                        <span>KARTLARIMIZ</span>
+                        <i class="fa-solid fa-credit-card"></i>
+                    </div>
+
+                    <div class="card-slots-container" id="card-slots-container">
+                        
+                        <!-- KART 1: KİMLİK KARTI -->
+                        <div class="card-slot-item" data-card="id_card">
+                            <div class="card-preview card-id">
+                                <div class="card-top-bar">
+                                    <span class="card-logo">STATE OF SAN ANDREAS</span>
+                                    <span class="card-chip"><i class="fa-solid fa-sim-card"></i></span>
+                                </div>
+                                <div class="card-body-preview">
+                                    <span class="card-name" id="preview-id-name">KİMLİK KARTI</span>
+                                    <span class="card-tag">T.C. / ID</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KART 2: SÜRÜCÜ BELGESİ -->
+                        <div class="card-slot-item" data-card="driver_license">
+                            <div class="card-preview card-driver">
+                                <div class="card-top-bar">
+                                    <span class="card-logo">SAN ANDREAS DMV</span>
+                                    <span class="card-chip"><i class="fa-solid fa-car"></i></span>
+                                </div>
+                                <div class="card-body-preview">
+                                    <span class="card-name">SÜRÜCÜ BELGESİ</span>
+                                    <span class="card-status-badge" id="badge-driver">LİSANSLI</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KART 3: BANKA KARTI -->
+                        <div class="card-slot-item" data-card="bank_card">
+                            <div class="card-preview card-bank">
+                                <div class="card-top-bar">
+                                    <span class="card-logo">FLEET BANK VISA</span>
+                                    <span class="card-chip"><i class="fa-solid fa-microchip"></i></span>
+                                </div>
+                                <div class="card-body-preview">
+                                    <span class="card-name" id="preview-bank-acc">**** 8819</span>
+                                    <span class="card-tag">PLATINUM</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KART 4: SİLAH RUHSATI -->
+                        <div class="card-slot-item" data-card="weapon_license">
+                            <div class="card-preview card-weapon">
+                                <div class="card-top-bar">
+                                    <span class="card-logo">WEAPON PERMIT</span>
+                                    <span class="card-chip"><i class="fa-solid fa-shield-halved"></i></span>
+                                </div>
+                                <div class="card-body-preview">
+                                    <span class="card-name">SİLAH RUHSATI</span>
+                                    <span class="card-status-badge" id="badge-weapon">YOK</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KART 5: AVUKAT LİSANSI -->
+                        <div class="card-slot-item" data-card="lawyer_license">
+                            <div class="card-preview card-lawyer">
+                                <div class="card-top-bar">
+                                    <span class="card-logo">STATE BAR ASSOC.</span>
+                                    <span class="card-chip"><i class="fa-solid fa-scale-balanced"></i></span>
+                                </div>
+                                <div class="card-body-preview">
+                                    <span class="card-name">AVUKAT KARTI</span>
+                                    <span class="card-status-badge" id="badge-lawyer">YOK</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KART 6: DIAMOND VIP KART -->
+                        <div class="card-slot-item" data-card="vip_card">
+                            <div class="card-preview card-vip">
+                                <div class="card-top-bar">
+                                    <span class="card-logo">DIAMOND CASINO</span>
+                                    <span class="card-chip"><i class="fa-solid fa-gem"></i></span>
+                                </div>
+                                <div class="card-body-preview">
+                                    <span class="card-name">VIP CLUB MEMBER</span>
+                                    <span class="card-status-badge" id="badge-vip">GOLD</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Cüzdan Kapat Butonu -->
+            <button class="wallet-close-btn" id="close-wallet-btn">
+                <i class="fa-solid fa-xmark"></i>
+                <span>Cüzdanı Kapat (ESC)</span>
+            </button>
+
+        </div>
+
+        <!-- 3D İNTERAKTİF KART İNCELEME MODAL (INSPECT MODAL) -->
+        <div id="card-modal" class="card-modal-overlay hidden">
+            <div class="modal-backdrop" id="modal-backdrop"></div>
+            
+            <div class="modal-box">
+                <div class="modal-header">
+                    <span class="modal-title" id="modal-card-title">KİMLİK KARTI İNCELEME</span>
+                    <button class="modal-close" id="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- 3D DÖNEN KART ALANI -->
+                <div class="card-3d-scene">
+                    <div class="card-3d-card" id="active-card-3d">
+                        
+                        <!-- KART ÖN YÜZÜ -->
+                        <div class="card-face card-front-face" id="modal-card-front">
+                            <!-- JS dinamik olarak dolduracak -->
+                        </div>
+
+                        <!-- KART ARKA YÜZÜ -->
+                        <div class="card-face card-back-face" id="modal-card-back">
+                            <!-- JS dinamik olarak dolduracak -->
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- MODAL BUTONLARI VE KONTROLLERİ -->
+                <div class="modal-actions">
+                    <button class="action-btn btn-flip" id="btn-flip-card">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Kartı Çevir</span>
+                    </button>
+                    <button class="action-btn btn-show" id="btn-show-nearby">
+                        <i class="fa-solid fa-users-viewfinder"></i>
+                        <span>Yakındakine Göster</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
