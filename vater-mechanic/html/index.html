@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vater Performance - Automotive Engineering</title>
+    <!-- Modern Crisp Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Main Industrial Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="mechanic-app" class="vater-app-wrapper hidden">
+        <!-- Floating Navigation Hint (Minimalist Industrial) -->
+        <div class="hud-helper-strip">
+            <div class="helper-badge"><i class="fa-solid fa-arrows-spin"></i><span>Sol Tık + Sürükle: <b>Kamera</b></span></div>
+            <div class="helper-badge"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Scroll: <b>Zoom</b></span></div>
+            <div class="helper-badge"><kbd>ESC</kbd><span>Çıkış</span></div>
+        </div>
+
+        <!-- TOP BAR: INDUSTRIAL AUTOMOTIVE WORKSHOP HEADER -->
+        <header class="top-header-strip">
+            <!-- Brand & Workshop Title -->
+            <div class="header-brand-box">
+                <div class="brand-square-logo">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+                <div class="brand-titles">
+                    <div class="brand-heading">VATER <span class="brand-accent">PERFORMANCE</span></div>
+                    <div class="brand-loc" id="shop-location-name">BENNY'S MOTORWORKS WORKSHOP</div>
+                </div>
+            </div>
+
+            <!-- Vehicle Identification Section -->
+            <div class="header-vehicle-box">
+                <span class="veh-class-badge" id="veh-class-text">PERFORMANCE</span>
+                <div class="veh-name-cluster">
+                    <span class="veh-make-label" id="veh-brand-text">PROGEN</span>
+                    <span class="veh-model-label" id="veh-name-text">T20</span>
+                </div>
+                <div class="plate-metal-tag">
+                    <span class="plate-region">LS</span>
+                    <span class="plate-text" id="veh-plate-text">47KLZ818</span>
+                </div>
+            </div>
+
+            <!-- Precision Health & Telemetry Gauges -->
+            <div class="header-telemetry-box">
+                <div class="gauge-cell">
+                    <div class="gauge-top">
+                        <span class="gauge-label"><i class="fa-solid fa-car-battery"></i> MOTOR</span>
+                        <span class="gauge-value" id="stat-engine-val">100%</span>
+                    </div>
+                    <div class="gauge-bar-bg">
+                        <div class="gauge-bar-fill engine-color" id="stat-engine-bar" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <div class="gauge-cell">
+                    <div class="gauge-top">
+                        <span class="gauge-label"><i class="fa-solid fa-shield-halved"></i> GÖVDE</span>
+                        <span class="gauge-value" id="stat-body-val">100%</span>
+                    </div>
+                    <div class="gauge-bar-bg">
+                        <div class="gauge-bar-fill body-color" id="stat-body-bar" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <div class="speed-cluster-cell">
+                    <span class="speed-label-text">EST. TOP SPEED</span>
+                    <span class="speed-value-text" id="stat-speed-val">265 <small>KM/H</small></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT: SIDEBAR + CONTENT WORKBENCH -->
+        <div class="main-workbench-layout">
+            <!-- LEFT CATEGORY SIDEBAR -->
+            <aside class="sidebar-workbench">
+                <div class="sidebar-headline">
+                    <span>MODİFİKASYON KATEGORİLERİ</span>
+                    <span class="category-count">8 BÖLÜM</span>
+                </div>
+
+                <nav class="category-stack">
+                    <button class="category-card active" data-category="performance">
+                        <div class="cat-bar"></div>
+                        <div class="cat-icon-frame"><i class="fa-solid fa-gauge-high"></i></div>
+                        <div class="cat-text-group">
+                            <span class="cat-primary-title">Performans</span>
+                            <span class="cat-secondary-desc">Motor, Fren, Şanzıman, Turbo</span>
+                        </div>
+                    </button>
+
+                    <button class="category-card" data-category="cosmetics">
+                        <div class="cat-bar"></div>
+                        <div class="cat-icon-frame"><i class="fa-solid fa-car-side"></i></div>
+                        <div class="cat-text-group">
+                            <span class="cat-primary-title">Gövde Kitleri</span>
+                            <span class="cat-secondary-desc">Tampon, Spoiler, Kaput, Etek</span>
+                        </div>
+                    </button>
+
+                    <button class="category-card" data-category="paint">
+                        <div class="cat-bar"></div>
+                        <div class="cat-icon-frame"><i class="fa-solid fa-fill-drip"></i></div>
+                        <div class="cat-text-group">
+                            <span class="cat-primary-title">Boya & Kaplama</span>
+                            <span class="cat-secondary-desc">Metalik, Mat, Sedef, Krom, RGB</span>
+                        </div>
+                    </button>
+
+                    <button class="category-card" data-category="wheels">
+                        <div class="cat-bar"></div>
+                        <div class="cat-icon-frame"><i class="fa-solid fa-circle-notch"></i></div>
+                        <div class="cat-text-group">
+                            <span class="cat-primary-title">Jant & Stance</span>
+                            <span class="cat-secondary-desc">Jantlar, Kamber, Lastik Tipi</span>
+                        </div>
+                    </button>
+
+                    <button class="category-card" data-category="lighting">
+                        <div class="cat-bar"></div>
+                        <div class="cat-icon-frame"><i class="fa-solid fa-lightbulb"></i></div>
+                        <div class="cat-text-group">
+                            <span class="cat-primary-title">Aydınlatma</span>
+                            <span class="cat-secondary-desc">Xenon Farlar, Alt Aydınlatma</span>
+                        </div>
+                    </button>
+
+                    <button class="category-card" data-category="interior">
+                        <div class="cat-bar"></div>
+                        <div class="cat-icon-frame"><i class="fa-solid fa-couch"></i></div>
+                        <div class="cat-text-group">
+                            <span class="cat-primary-title">İç Mekan & Detay</span>
+                            <span class="cat-secondary-desc">Kabin, Direksiyon, Cam Filmi</span>
+                        </div>
+                    </button>
+
+                    <button class="category-card" data-category="extras">
+                        <div class="cat-bar"></div>
+                        <div class="cat-icon-frame"><i class="fa-solid fa-puzzle-piece"></i></div>
+                        <div class="cat-text-group">
+                            <span class="cat-primary-title">Ekstralar & Livery</span>
+                            <span class="cat-secondary-desc">Özel Kaplamalar & Ek Parçalar</span>
+                        </div>
+                    </button>
+
+                    <button class="category-card" data-category="service">
+                        <div class="cat-bar"></div>
+                        <div class="cat-icon-frame"><i class="fa-solid fa-wrench"></i></div>
+                        <div class="cat-text-group">
+                            <span class="cat-primary-title">Servis & Bakım</span>
+                            <span class="cat-secondary-desc">Tamir & Detaylı Yıkama</span>
+                        </div>
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- RIGHT WORKBENCH CONTENT -->
+            <main class="workbench-main-panel">
+                <!-- Subcategory Tab Bar -->
+                <div class="sub-tab-strip">
+                    <div class="sub-tabs-container" id="subcategory-bar">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Parts Workbench Canvas -->
+                <div class="workbench-scroll-area" id="content-container">
+                    <!-- Parts rendered here -->
+                </div>
+            </main>
+        </div>
+
+        <!-- INTEGRATED DOCK: CAMERA & DOORS (Flat Industrial Strip) -->
+        <div class="center-dock-strip">
+            <div class="dock-inner-box">
+                <div class="dock-group">
+                    <span class="dock-header-tag"><i class="fa-solid fa-video"></i> KAMERA</span>
+                    <div class="dock-btn-row">
+                        <button class="dock-tab-btn active" data-cam="default"><i class="fa-solid fa-arrows-to-eye"></i> Genel</button>
+                        <button class="dock-tab-btn" data-cam="front"><i class="fa-solid fa-arrow-up"></i> Ön</button>
+                        <button class="dock-tab-btn" data-cam="rear"><i class="fa-solid fa-arrow-down"></i> Arka</button>
+                        <button class="dock-tab-btn" data-cam="wheel_front"><i class="fa-solid fa-circle-dot"></i> Jant</button>
+                        <button class="dock-tab-btn" data-cam="interior"><i class="fa-solid fa-chair"></i> Kabin</button>
+                        <button class="dock-tab-btn" data-cam="underglow"><i class="fa-solid fa-sun"></i> Alt</button>
+                    </div>
+                </div>
+
+                <div class="dock-sep-line"></div>
+
+                <div class="dock-group">
+                    <span class="dock-header-tag"><i class="fa-solid fa-car"></i> KAPILAR</span>
+                    <div class="dock-btn-row">
+                        <button class="dock-tab-btn door-btn" data-door="4"><i class="fa-solid fa-car-burst"></i> Kaput</button>
+                        <button class="dock-tab-btn" data-door="5"><i class="fa-solid fa-box-archive"></i> Bagaj</button>
+                        <button class="dock-tab-btn" data-door="0"><i class="fa-solid fa-door-open"></i> Sol</button>
+                        <button class="dock-tab-btn" data-door="1"><i class="fa-solid fa-door-open fa-flip-horizontal"></i> Sağ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM CHECKOUT & INVOICE FOOTER -->
+        <footer class="bottom-checkout-footer">
+            <!-- Left: Cart Summary -->
+            <div class="footer-left-area">
+                <div class="cart-box-trigger" id="cart-summary-btn">
+                    <div class="cart-icon-cell">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="cart-pill-badge" id="cart-count">0</span>
+                    </div>
+                    <div class="cart-text-cell">
+                        <span class="cart-tag">SEPET DURUMU</span>
+                        <span class="cart-amount-text" id="cart-items-text">0 parça seçildi</span>
+                    </div>
+                    <i class="fa-solid fa-angle-up cart-arrow-icon"></i>
+                </div>
+            </div>
+
+            <!-- Center: Total Price -->
+            <div class="footer-center-area">
+                <div class="total-calc-box">
+                    <span class="total-caption">TOPLAM MODİFİKASYON TUTARI</span>
+                    <span class="total-number-display" id="total-price-display">0 $</span>
+                </div>
+            </div>
+
+            <!-- Right: Action Buttons -->
+            <div class="footer-right-area">
+                <button class="flat-btn btn-danger" id="btn-cancel">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>VAZGEÇ & ÇIK</span>
+                </button>
+
+                <button class="flat-btn btn-secondary" id="btn-pay-bank">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <span>BANKA İLE ÖDE</span>
+                </button>
+
+                <button class="flat-btn btn-primary" id="btn-pay-cash">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    <span>NAKİT İLE ÖDE</span>
+                </button>
+            </div>
+        </footer>
+
+        <!-- CART POPOVER MODAL -->
+        <div class="cart-modal-backdrop hidden" id="cart-modal">
+            <div class="cart-modal-container">
+                <div class="modal-top-bar">
+                    <div class="modal-title-group">
+                        <i class="fa-solid fa-receipt"></i>
+                        <span>SEPETTEKİ MODİFİKASYONLAR</span>
+                    </div>
+                    <button class="modal-dismiss-btn" id="cart-modal-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="modal-items-scroll" id="cart-modal-items">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div class="modal-bottom-bar">
+                    <button class="btn-trash-cart" id="btn-clear-cart">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>Sepeti Boşalt</span>
+                    </button>
+                    <div class="modal-sum-box">
+                        <span class="sum-label">Toplam:</span>
+                        <span class="sum-val" id="modal-total-price">0 $</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JS Application -->
+    <script src="script.js"></script>
+</body>
+</html>
